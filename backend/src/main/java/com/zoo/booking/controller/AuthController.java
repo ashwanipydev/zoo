@@ -52,6 +52,9 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    com.zoo.booking.service.EmailService emailService;
+
     @PostMapping("/signin")
     @Operation(summary = "User Login", description = "Authenticate user with email and password")
     @ApiResponses(value = {
@@ -124,5 +127,45 @@ public class AuthController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/forgot-password")
+    @Operation(summary = "Forgot Password", description = "Request a password reset token")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        java.util.Optional<User> userOptional = userRepository.findByEmail(email);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email not found!"));
+        }
+
+        User user = userOptional.get();
+        String token = java.util.UUID.randomUUID().toString();
+        user.setResetToken(token);
+        user.setResetTokenExpiry(java.time.LocalDateTime.now().plusHours(1));
+        userRepository.save(user);
+
+        emailService.sendResetPasswordEmail(email, token);
+
+        return ResponseEntity.ok(new MessageResponse("Password reset link sent to your email."));
+    }
+
+    @PostMapping("/reset-password")
+    @Operation(summary = "Reset Password", description = "Reset password using token")
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+        java.util.Optional<User> userOptional = userRepository.findByResetToken(token);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid or expired token!"));
+        }
+
+        User user = userOptional.get();
+        if (user.getResetTokenExpiry().isBefore(java.time.LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Token has expired!"));
+        }
+
+        user.setPassword(encoder.encode(newPassword));
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse("Password reset successful!"));
     }
 }

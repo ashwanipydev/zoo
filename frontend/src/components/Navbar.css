@@ -1,0 +1,115 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250, 250, 245, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--surface-container);
+}
+
+.navbar__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--on-surface);
+}
+
+.navbar__brand-icon {
+  font-size: 1.5rem;
+}
+
+.navbar__brand-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary-container);
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.navbar__link {
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+  padding: 6px 0;
+  position: relative;
+  transition: color var(--transition-fast);
+}
+
+.navbar__link:hover {
+  color: var(--primary-container);
+}
+
+.navbar__link--admin {
+  color: var(--primary-container);
+  font-weight: 600;
+}
+
+.navbar__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--surface-container);
+}
+
+.navbar__toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--on-surface);
+  cursor: pointer;
+  padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .navbar__toggle {
+    display: block;
+  }
+
+  .navbar__links {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: column;
+    background: var(--surface-container-lowest);
+    padding: var(--space-xl) var(--space-lg);
+    gap: var(--space-md);
+    align-items: flex-start;
+    transform: translateX(100%);
+    transition: transform var(--transition-base);
+    z-index: 99;
+  }
+
+  .navbar__links--open {
+    transform: translateX(0);
+  }
+
+  .navbar__user {
+    border-left: none;
+    border-top: 1px solid var(--surface-container);
+    padding-left: 0;
+    padding-top: var(--space-md);
+    width: 100%;
+  }
+}
