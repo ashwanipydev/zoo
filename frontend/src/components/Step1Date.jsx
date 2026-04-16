@@ -2,15 +2,17 @@ import React from 'react';
 
 function Step1Date({ date, handleDateChange, slots, selectedSlot, setSelectedSlot, setStep }) {
   return (
-    <div className="max-w-5xl mx-auto w-full px-6 py-8 pb-32 font-body text-on-surface">
+    <div className="max-w-5xl mx-auto w-full px-6 py-8 pb-32">
+      {/* Progress Indicator */}
       <section className="mb-12">
         <div className="flex justify-between items-end mb-4">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.1em] font-bold text-primary mb-1 block">Step 1 of 3</span>
+            <span className="text-[10px] uppercase tracking-[0.1em] font-bold text-primary mb-1 block">Step 1 of 4</span>
             <h2 className="text-3xl font-headline font-bold tracking-tight text-on-surface">Date & Time selection</h2>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             <div className="h-1.5 w-12 bg-primary rounded-full"></div>
+            <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
             <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
             <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
           </div>
@@ -29,8 +31,12 @@ function Step1Date({ date, handleDateChange, slots, selectedSlot, setSelectedSlo
                     className="w-full p-4 border-2 border-outline-variant rounded-lg bg-surface-bright" />
           </div>
 
-          <div className="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_12px_32px_rgba(44,52,51,0.06)] flex gap-4 items-center">
-            <span className="text-[2rem]">🦁</span>
+          <div className="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_12px_32px_rgba(44,52,51,0.06)] flex gap-4 items-center border border-outline-variant/10">
+            <img 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXz_ICP18ss09uijIkmz4OaJanBXDkNuTltbzPd_9Il7Yj8EmDcKW7iDNgbhVc8kq1EPxthiRBwXqD3HMSvPZbpMzpYjOAY0F_7BpcwUggMTdrQVrTAwZZmJvYkTrb34eS3AABeJAvzy25RXwUw5hbNp7fKbydeDp12M7g1Ykt9fNAEocyed9to7isGp41LJFCVY4R5lMK7aJr8HGKZ8dpuXdN-FSZlhKHRVNhZ5l20mZc8p33Dtgta0W4_XMKmlXN9vLBu2RLlOE" 
+              alt="Majestic Lion" 
+              className="w-16 h-16 rounded-lg object-cover"
+            />
             <div>
               <span className="text-[10px] uppercase font-bold text-tertiary">Naturalist Tip</span>
               <p className="text-sm text-on-surface-variant leading-relaxed">Morning slots often feature active feeding sessions for our larger carnivores.</p>
@@ -56,7 +62,7 @@ function Step1Date({ date, handleDateChange, slots, selectedSlot, setSelectedSlo
                          checked={isSelected} 
                          onChange={() => setSelectedSlot(s)} />
                   <div className={`p-5 rounded-xl border-2 transition-all group-hover:shadow-md 
-                                  ${isSelected ? 'border-primary bg-primary-container/20' : 'border-transparent bg-surface-container-lowest'}`}>
+                                  ${isSelected ? 'border-primary bg-surface-container-lowest ring-2 ring-primary/5' : 'border-transparent bg-surface-container-lowest hover:border-outline-variant/30'}`}>
                     <div className="flex justify-between items-start mb-3">
                       <span className={`font-bold text-lg ${isSelected ? 'text-primary' : 'text-on-surface'}`}>
                         {s.startTime} — {s.endTime}
@@ -102,9 +108,9 @@ function Step1Date({ date, handleDateChange, slots, selectedSlot, setSelectedSlo
             disabled={!selectedSlot}
             onClick={() => setStep(2)}
             className={`px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98]
-                       ${selectedSlot ? 'bg-primary text-on-primary hover:bg-primary-dim cursor-pointer' : 'bg-outline-variant/50 text-on-surface border cursor-not-allowed'}`}>
+                       ${selectedSlot ? 'bg-primary text-on-primary hover:bg-primary-dim shadow-lg shadow-primary/20' : 'bg-surface-dim/40 text-outline cursor-not-allowed'}`}>
             Continue to Tickets
-            <span className="material-symbols-outlined">arrow_forward</span>
+            <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
           </button>
         </div>
       </div>

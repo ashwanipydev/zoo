@@ -2,74 +2,154 @@ import React from 'react';
 
 function Step4Payment({ selectedSlot, ticketCounts, totalAmount, setStep, handleBook }) {
   return (
-    <div className="max-w-5xl mx-auto w-full px-6 py-8 pb-32 font-body text-on-surface">
-      <section className="mb-12">
-        <div className="flex justify-between items-end mb-4">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.1em] font-bold text-primary mb-1 block">Step 4 of 4</span>
-            <h2 className="text-3xl font-headline font-bold tracking-tight text-on-surface">Payment & Checkout</h2>
+    <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 py-12">
+      {/* Progress Indicator */}
+      <div className="max-w-xl mx-auto mb-16">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">1</span>
+            <span className="text-[0.625rem] uppercase tracking-widest text-on-surface-variant font-medium">Date</span>
           </div>
-          <div className="flex gap-1">
-            <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
-            <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
-            <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
-            <div className="h-1.5 w-12 bg-primary rounded-full"></div>
+          <div className="h-[2px] flex-grow bg-primary-container mx-4"></div>
+          <div className="flex flex-col items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">2</span>
+            <span className="text-[0.625rem] uppercase tracking-widest text-on-surface-variant font-medium">Tickets</span>
           </div>
-        </div>
-        <p className="text-on-surface-variant max-w-md">Review your booking summary and proceed with the secure payment gateway to confirm your tickets.</p>
-      </section>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-surface-container-low p-6 rounded-xl space-y-6">
-          <h3 className="text-lg font-bold border-b pb-2">Booking Summary</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-on-surface-variant">Date</span>
-              <span className="font-bold">{selectedSlot?.date}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-on-surface-variant">Time Window</span>
-              <span className="font-bold">{selectedSlot?.startTime} - {selectedSlot?.endTime}</span>
-            </div>
+          <div className="h-[2px] flex-grow bg-primary-container mx-4"></div>
+          <div className="flex flex-col items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">3</span>
+            <span className="text-[0.625rem] uppercase tracking-widest text-on-surface-variant font-medium">Details</span>
           </div>
-          
-          <h3 className="text-lg font-bold border-b pb-2 pt-4">Tickets</h3>
-          <ul className="space-y-3">
-             {Object.entries(ticketCounts).map(([type, count]) => {
-                if(count > 0) {
-                   return (
-                     <li key={type} className="flex justify-between">
-                       <span>{count}x {type} {type !== 'Camera' ? 'Ticket' : 'Pass'}</span>
-                     </li>
-                   )
-                }
-                return null;
-             })}
-          </ul>
-
-          <div className="flex justify-between items-center text-xl font-bold pt-6 border-t mt-6">
-            <span>Total Amount</span>
-            <span className="text-primary">₹{totalAmount}</span>
-          </div>
-        </div>
-
-        <div className="p-6 border-2 border-primary bg-primary-container/10 rounded-xl flex flex-col justify-center items-center text-center space-y-4">
-          <span className="material-symbols-outlined text-[4rem] text-primary">lock</span>
-          <h3 className="text-xl font-bold">Secure Payment</h3>
-          <p className="text-on-surface-variant">You will be redirected to Razorpay to complete your transaction securely.</p>
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full bg-surface-bright/90 backdrop-blur-xl border-t border-outline-variant/10 px-6 py-4 z-40">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-6">
-          <button onClick={() => setStep(3)} className="text-primary font-bold hover:underline">Go Back</button>
-          <button 
-            onClick={handleBook}
-            className="px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 bg-[#274635] text-[#e1ffea] hover:bg-[#1f382a] transition-all focus:ring-4 ring-primary-container active:scale-[0.98]">
-            <span className="material-symbols-outlined">payments</span>
-            Pay ₹{totalAmount}
-          </button>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Left Column: Payment Methods */}
+        <div className="lg:col-span-8 space-y-12">
+          <section>
+            <h1 className="text-4xl font-bold tracking-tighter text-on-surface mb-2">Checkout & Payment</h1>
+            <p className="text-on-surface-variant max-w-2xl">Step 4: Choose your preferred payment method. We use enterprise-grade encryption to ensure your transaction is private and safe.</p>
+          </section>
+
+          <div className="space-y-4">
+            <h3 className="text-xs uppercase tracking-[0.1em] font-bold text-on-surface-variant mb-6 px-1">Select Payment Method</h3>
+            
+            {/* Payment Method Option 1 */}
+            <label className="flex items-center gap-6 p-6 bg-surface-container-low border-2 border-transparent hover:border-outline-variant/30 rounded-xl cursor-pointer transition-all group">
+              <input type="radio" name="payment" className="w-5 h-5 accent-primary" defaultChecked />
+              <div className="flex-grow flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary">credit_card</span>
+                  </div>
+                  <div>
+                    <p className="font-bold text-on-surface">Credit / Debit Card</p>
+                    <p className="text-xs text-on-surface-variant">Visa, Mastercard, Amex</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="h-4 w-6 bg-surface-container-highest rounded-sm"></div>
+                  <div className="h-4 w-6 bg-surface-container-highest rounded-sm"></div>
+                </div>
+              </div>
+            </label>
+
+            {/* Payment Method Option 2 */}
+            <label className="flex items-center gap-6 p-6 bg-surface-container-low border-2 border-transparent hover:border-outline-variant/30 rounded-xl cursor-pointer transition-all">
+              <input type="radio" name="payment" className="w-5 h-5 accent-primary" />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                  <span className="material-symbols-outlined text-primary">account_balance</span>
+                </div>
+                <div>
+                  <p className="font-bold text-on-surface">Net Banking</p>
+                  <p className="text-xs text-on-surface-variant">All Indian Major Banks</p>
+                </div>
+              </div>
+            </label>
+
+            {/* Payment Method Option 3 */}
+            <label className="flex items-center gap-6 p-6 bg-surface-container-low border-2 border-transparent hover:border-outline-variant/30 rounded-xl cursor-pointer transition-all">
+              <input type="radio" name="payment" className="w-5 h-5 accent-primary" />
+              <div className="flex-grow flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary">qr_code_2</span>
+                  </div>
+                  <div>
+                    <p className="font-bold text-on-surface">UPI / QR Code</p>
+                    <p className="text-xs text-on-surface-variant">Google Pay, PhonePe, Paytm</p>
+                  </div>
+                </div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" className="h-4 opacity-40" />
+              </div>
+            </label>
+          </div>
+
+          <div className="p-8 bg-surface-container-low/50 rounded-xl border border-dashed border-outline-variant/30 flex flex-col items-center text-center space-y-4">
+             <div className="flex items-center justify-center gap-4 mb-2">
+                <img src="https://razorpay.com/assets/razorpay-glyph.svg" alt="Razorpay" className="h-6" />
+                <span className="h-4 w-[1px] bg-outline-variant/30"></span>
+                <span className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Powered By Razorpay</span>
+             </div>
+             <p className="text-sm text-on-surface-variant max-w-md">Clicking 'Pay Now' will open the secure Razorpay overlay where you can complete your transaction.</p>
+          </div>
         </div>
+
+        {/* Right Column: Order Review Sidebar */}
+        <aside className="lg:col-span-4">
+          <div className="sticky top-12 bg-surface-container-lowest p-8 shadow-[0px_12px_32px_rgba(44,52,51,0.06)] rounded-xl border border-outline-variant/10 space-y-8">
+            <div>
+              <h2 className="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-bold mb-6">Order Review</h2>
+              <div className="space-y-6">
+                <div className="space-y-4 p-5 bg-surface-container-low rounded-lg">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-on-surface-variant">Selected Date</span>
+                    <span className="font-bold text-on-surface">{selectedSlot?.date}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-on-surface-variant">Time Slot</span>
+                    <span className="font-bold text-on-surface">{selectedSlot?.startTime} - {selectedSlot?.endTime}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-6 border-t border-surface-container-high">
+                  {Object.entries(ticketCounts).map(([type, count]) => (
+                    count > 0 && (
+                      <div key={type} className="flex justify-between text-sm">
+                        <span className="text-on-surface-variant">{type} x {count}</span>
+                        <span className="font-medium text-on-surface">₹{count * (type === 'Adult' ? 80 : type === 'Child' ? 40 : type === 'Safari' ? 100 : 150)}</span>
+                      </div>
+                    )
+                  ))}
+                </div>
+
+                <div className="pt-6 border-t font-headline border-primary/10 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-on-surface">Grand Total</span>
+                    <span className="text-3xl font-extrabold tracking-tighter text-primary">₹{totalAmount}.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              onClick={handleBook}
+              className="w-full py-5 rounded-lg bg-primary text-on-primary font-bold flex items-center justify-center gap-3 group transition-all active:scale-[0.98] shadow-lg shadow-primary/20 hover:bg-primary-dim"
+            >
+              <span className="material-symbols-outlined text-lg">payment</span>
+              Pay Now
+            </button>
+            
+            <p className="text-[10px] text-on-surface-variant text-center leading-relaxed">
+              By clicking 'Pay Now', you agree to our <span className="underline">Ticket Terms</span> and <span className="underline">Policy</span>.
+            </p>
+
+            <button onClick={() => setStep(3)} className="w-full py-3 text-on-surface-variant font-bold text-xs uppercase hover:text-primary transition-colors">
+              Return to Details
+            </button>
+          </div>
+        </aside>
       </div>
     </div>
   );

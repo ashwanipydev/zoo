@@ -15,23 +15,23 @@ function LandingPage() {
           </div>
           <div className="relative z-10 max-w-7xl mx-auto px-8 w-full">
             <div className="max-w-2xl">
-              <span className="inline-block text-primary font-bold tracking-widest uppercase text-xs mb-4">Official Botanical Garden & Zoo</span>
-              <h2 className="text-6xl md:text-7xl font-bold text-on-surface tracking-tighter leading-[0.9] mb-6">
+              <span className="inline-block text-tertiary font-bold tracking-[0.2em] uppercase text-[10px] mb-4">Official Sanctuary & Botanical Path</span>
+              <h2 className="text-7xl md:text-8xl font-bold text-on-surface tracking-tighter leading-[0.85] mb-8">
                   Where Nature <br/>
                   <span className="text-primary italic">Architecture</span> Meets.
               </h2>
-              <p className="text-lg text-on-surface-variant mb-10 leading-relaxed font-medium max-w-md">
-                  Experience the harmony of conservation and civic design. Our sanctuary hosts over 400 species within architecturally significant habitats.
+              <p className="text-lg text-on-surface-variant mb-12 leading-relaxed font-medium max-w-lg">
+                  Experience the harmony of conservation and civic design. Our sanctuary hosts over 400 species within architecturally significant habitats, defined by breathability and intent.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/book">
-                  <button className="bg-primary text-on-primary px-10 py-4 rounded-lg text-lg font-semibold shadow-lg hover:bg-primary-dim transition-all">
-                      Book Tickets
+                  <button className="bg-primary text-on-primary px-12 py-5 rounded-lg text-lg font-bold shadow-xl shadow-primary/20 hover:bg-primary-dim transition-all active:scale-[0.98]">
+                      Secure Tickets
                   </button>
                 </Link>
-                <button className="flex items-center gap-2 px-8 py-4 text-on-surface font-semibold hover:bg-surface-container-low rounded-lg transition-colors border border-outline-variant/30">
+                <button className="flex items-center gap-3 px-10 py-5 text-on-surface font-bold hover:bg-surface-container transition-colors rounded-lg bg-surface-container-low border-b-2 border-primary/20">
                   <span className="material-symbols-outlined" data-icon="explore">explore</span>
-                  View Map
+                  Sanctuary Map
                 </button>
               </div>
             </div>

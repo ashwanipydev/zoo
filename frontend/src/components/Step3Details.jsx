@@ -2,80 +2,118 @@ import React from 'react';
 
 function Step3Details({ userDetails, handleUserDetailsChange, setStep }) {
   return (
-    <div className="max-w-5xl mx-auto w-full px-6 py-8 pb-32 font-body text-on-surface">
-      <section className="mb-12">
-        <div className="flex justify-between items-end mb-4">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.1em] font-bold text-primary mb-1 block">Step 3 of 4</span>
-            <h2 className="text-3xl font-headline font-bold tracking-tight text-on-surface">Visitor Details</h2>
+    <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 py-12">
+      {/* Progress Indicator */}
+      <div className="max-w-xl mx-auto mb-16">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">1</span>
+            <span className="text-[0.625rem] uppercase tracking-widest text-on-surface-variant font-medium">Date</span>
           </div>
-          <div className="flex gap-1">
-            <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
-            <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
-            <div className="h-1.5 w-12 bg-primary rounded-full"></div>
-            <div className="h-1.5 w-12 bg-surface-container-highest rounded-full"></div>
+          <div className="h-[2px] flex-grow bg-primary-container mx-4"></div>
+          <div className="flex flex-col items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">2</span>
+            <span className="text-[0.625rem] uppercase tracking-widest text-on-surface-variant font-medium">Tickets</span>
           </div>
-        </div>
-        <p className="text-on-surface-variant max-w-md">Please provide your contact information. Your tickets will be emailed here.</p>
-      </section>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-surface-container-low p-6 rounded-xl space-y-6">
-          <div>
-            <label className="block text-sm font-bold text-on-surface mb-2">Full Name</label>
-            <input 
-              type="text" 
-              value={userDetails?.name || ''}
-              onChange={(e) => handleUserDetailsChange('name', e.target.value)}
-              className="w-full p-4 border-2 border-outline-variant rounded-lg bg-surface-bright focus:border-primary outline-none transition-colors"
-              placeholder="John Doe" 
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-bold text-on-surface mb-2">Email Address</label>
-            <input 
-              type="email" 
-              value={userDetails?.email || ''}
-              onChange={(e) => handleUserDetailsChange('email', e.target.value)}
-              className="w-full p-4 border-2 border-outline-variant rounded-lg bg-surface-bright focus:border-primary outline-none transition-colors"
-              placeholder="john@example.com" 
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-bold text-on-surface mb-2">Phone Number</label>
-            <input 
-              type="tel" 
-              value={userDetails?.phone || ''}
-              onChange={(e) => handleUserDetailsChange('phone', e.target.value)}
-              className="w-full p-4 border-2 border-outline-variant rounded-lg bg-surface-bright focus:border-primary outline-none transition-colors"
-              placeholder="+91 9876543210" 
-            />
-          </div>
-        </div>
-
-        <div className="bg-primary-container/30 border-l-4 border-primary p-6 rounded-r-xl self-start">
-          <div className="flex gap-3">
-            <span className="material-symbols-outlined text-primary">info</span>
-            <div>
-              <h4 className="font-bold text-on-primary-container text-sm">Account Note</h4>
-              <p className="text-sm text-on-primary-container/80 mt-1">If you are logged directly into your account, we assume these details match your profile. Valid ID is still required at the gate.</p>
-            </div>
+          <div className="h-[2px] flex-grow bg-primary-container mx-4"></div>
+          <div className="flex flex-col items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm">3</span>
+            <span className="text-[0.625rem] uppercase tracking-widest text-primary font-bold">Details</span>
           </div>
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full bg-surface-bright/90 backdrop-blur-xl border-t border-outline-variant/10 px-6 py-4 z-40">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-6">
-          <button onClick={() => setStep(2)} className="text-primary font-bold hover:underline">Go Back</button>
-          <button 
-            disabled={!userDetails.name || !userDetails.email || !userDetails.phone}
-            onClick={() => setStep(4)}
-            className={`px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98]
-                       ${(userDetails.name && userDetails.email && userDetails.phone) ? 'bg-primary text-on-primary hover:bg-primary-dim cursor-pointer' : 'bg-outline-variant/50 text-on-surface border cursor-not-allowed'}`}>
-            Continue to Payment
-            <span className="material-symbols-outlined">arrow_forward</span>
-          </button>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Left Column: Form Content */}
+        <div className="lg:col-span-8 space-y-12">
+          <section>
+            <h1 className="text-4xl font-bold tracking-tighter text-on-surface mb-2">Guest Information</h1>
+            <p className="text-on-surface-variant max-w-2xl">Step 3: Tell us who is visiting. These details help us provide a personalized experience and are required for conservation records.</p>
+          </section>
+
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <label className="text-xs uppercase tracking-[0.1em] font-bold text-on-surface-variant px-1">Full Name</label>
+                <input 
+                  type="text" 
+                  value={userDetails?.name || ''}
+                  onChange={(e) => handleUserDetailsChange('name', e.target.value)}
+                  className="w-full bg-surface-container-high p-5 rounded-lg border-b-2 border-transparent focus:border-primary focus:bg-surface-container-highest outline-none transition-all placeholder:text-outline/50 font-medium"
+                  placeholder="Enter your full name" 
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs uppercase tracking-[0.1em] font-bold text-on-surface-variant px-1">Mobile Number</label>
+                <input 
+                  type="tel" 
+                  value={userDetails?.phone || ''}
+                  onChange={(e) => handleUserDetailsChange('phone', e.target.value)}
+                  className="w-full bg-surface-container-high p-5 rounded-lg border-b-2 border-transparent focus:border-primary focus:bg-surface-container-highest outline-none transition-all placeholder:text-outline/50 font-medium"
+                  placeholder="+91 — ——— —— —" 
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-[0.1em] font-bold text-on-surface-variant px-1">Email Address</label>
+              <input 
+                type="email" 
+                value={userDetails?.email || ''}
+                onChange={(e) => handleUserDetailsChange('email', e.target.value)}
+                className="w-full bg-surface-container-high p-5 rounded-lg border-b-2 border-transparent focus:border-primary focus:bg-surface-container-highest outline-none transition-all placeholder:text-outline/50 font-medium"
+                placeholder="your@email.com" 
+              />
+              <p className="text-[0.625rem] text-on-surface-variant mt-2 italic">Your digital passes and receipt will be sent to this address.</p>
+            </div>
+
+            {/* Account Note / Callout */}
+            <div className="p-8 bg-surface-container-low rounded-xl flex gap-6 items-start border border-outline-variant/10">
+              <span className="material-symbols-outlined text-primary text-3xl">account_balance</span>
+              <div className="space-y-2">
+                <h4 className="font-bold text-on-surface text-lg tracking-tight">Conservation Account</h4>
+                <p className="text-sm text-on-surface-variant leading-relaxed">If you are a registered sanctuary member, these details must match your membership ID to apply additional discounts during checkout.</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Right Column: Sidebar Booking Summary (Reused design for consistency) */}
+        <aside className="lg:col-span-4">
+          <div className="sticky top-12 bg-surface-container-lowest p-8 shadow-[0px_12px_32px_rgba(44,52,51,0.06)] rounded-xl border border-outline-variant/10 space-y-8">
+            <div>
+              <h2 className="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-bold mb-6">Current Selection</h2>
+              <div className="space-y-6">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-bold text-on-surface underline decoration-primary/20 decoration-2 underline-offset-4">General Admission</p>
+                    <p className="text-xs text-on-surface-variant">Arboreal Path Access</p>
+                  </div>
+                  <button onClick={() => setStep(1)} className="text-primary hover:underline text-xs font-bold uppercase transition-colors">Edit</button>
+                </div>
+                {/* Note: In a real app we'd pass ticket counts here too, or pull from global state */}
+                <p className="text-[10px] uppercase font-bold text-tertiary">Reviewing information...</p>
+                <div className="pt-6 border-t border-surface-container-high space-y-4">
+                  <p className="text-[0.625rem] text-on-surface-variant text-center leading-relaxed">
+                    Personal data is processed according to our <span className="underline cursor-pointer">Privacy Charter</span> for sanctuary security.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button 
+              disabled={!userDetails.name || !userDetails.email || !userDetails.phone}
+              onClick={() => setStep(4)}
+              className={`w-full py-5 rounded-lg font-bold flex items-center justify-center gap-3 group transition-all active:scale-[0.98]
+                         ${(userDetails.name && userDetails.email && userDetails.phone) ? 'bg-primary text-on-primary hover:bg-primary-dim shadow-lg shadow-primary/20' : 'bg-surface-dim/40 text-outline cursor-not-allowed'}`}
+            >
+              Proceed to Checkout
+              <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </button>
+            <button onClick={() => setStep(2)} className="w-full py-3 text-on-surface-variant font-bold text-xs uppercase hover:text-primary transition-colors">
+              Return to Tickets
+            </button>
+          </div>
+        </aside>
       </div>
     </div>
   );

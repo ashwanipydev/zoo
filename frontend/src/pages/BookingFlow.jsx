@@ -113,28 +113,50 @@ function BookingFlow() {
       )}
 
       {step === 5 && (
-        <div className="max-w-3xl mx-auto px-6 py-16 text-center mt-12 bg-surface-container-low rounded-xl shadow-lg border border-primary-container">
-          <div className="w-20 h-20 bg-primary-container text-primary rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="material-symbols-outlined text-[3rem]">check_circle</span>
+        <div className="max-w-4xl mx-auto px-6 py-20 text-center mt-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <div className="bg-surface-container-lowest p-12 rounded-[2rem] shadow-[0px_24px_48px_rgba(44,52,51,0.08)] border border-outline-variant/10 relative overflow-hidden">
+            {/* Decorative element */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-tertiary/5 rounded-full blur-3xl"></div>
+            
+            <div className="w-24 h-24 bg-primary text-on-primary rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl shadow-primary/20">
+              <span className="material-symbols-outlined text-[3.5rem]">verified</span>
+            </div>
+            
+            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-tertiary mb-3 block">Reservation Complete</span>
+            <h1 className="text-5xl font-bold tracking-tighter text-on-surface mb-4">Your journey begins.</h1>
+            <p className="text-on-surface-variant max-w-lg mx-auto mb-10 leading-relaxed">
+              We've confirmed your visit to the sanctuary. A high-resolution digital pass has been sent to <span className="text-on-surface font-bold">{userDetails.email}</span>.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto text-left">
+              <div className="p-6 bg-surface-container-low rounded-xl">
+                <p className="text-[10px] uppercase font-bold text-on-surface-variant mb-2">Booking ID</p>
+                <p className="font-bold text-on-surface font-mono">{bookingId}</p>
+              </div>
+              <div className="p-6 bg-surface-container-low rounded-xl">
+                <p className="text-[10px] uppercase font-bold text-on-surface-variant mb-2">Visit Date</p>
+                <p className="font-bold text-on-surface">{selectedSlot?.date}</p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              {ticketUrl && (
+                 <a href={`http://localhost:8080${ticketUrl}`} target="_blank" rel="noreferrer" 
+                    className="px-10 py-5 rounded-xl font-bold bg-primary text-on-primary hover:bg-primary-dim shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                   <span className="material-symbols-outlined">file_download</span>
+                   Download E-Ticket
+                 </a>
+              )}
+              <button onClick={() => window.location.href = '/'} 
+                      className="px-10 py-5 rounded-xl font-bold bg-surface-container-highest text-on-surface hover:bg-surface-dim transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
+                Return to Sanctuary Home
+              </button>
+            </div>
           </div>
-          <h1 className="text-3xl font-headline font-bold mb-2">Booking Confirmed!</h1>
-          <p className="text-on-surface-variant mb-6">Booking ID: <span className="font-bold text-on-surface">{bookingId}</span></p>
-          <p className="text-sm text-on-surface-variant max-w-md mx-auto mb-8">
-            Your e-ticket has been generated with a unique QR code. Present it at the digital turnstiles when you arrive.
-          </p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            {ticketUrl && (
-               <a href={`http://localhost:8080${ticketUrl}`} target="_blank" rel="noreferrer" 
-                  className="px-6 py-3 rounded-xl font-bold bg-primary text-on-primary hover:bg-primary-dim transition-colors flex items-center justify-center gap-2">
-                 <span className="material-symbols-outlined">download</span>
-                 Download PDF Ticket
-               </a>
-            )}
-            <button className="px-6 py-3 rounded-xl font-bold bg-surface-container-highest text-on-surface hover:bg-surface-dim transition-colors block">
-              Return to Home
-            </button>
-          </div>
+          <p className="mt-12 text-xs text-on-surface-variant/60 max-w-md mx-auto italic leading-relaxed">
+            Please present your digital pass at the Verdant Gate. For conservation reasons, we encourage using digital tickets instead of printing.
+          </p>
         </div>
       )}
     </div>
