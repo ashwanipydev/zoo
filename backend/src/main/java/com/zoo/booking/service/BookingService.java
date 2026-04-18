@@ -8,6 +8,7 @@ import com.zoo.booking.entity.User;
 import com.zoo.booking.payload.request.CreateBookingRequest;
 import com.zoo.booking.payload.response.PriceBreakdownResponse;
 import com.zoo.booking.repository.AddOnRepository;
+import com.zoo.booking.repository.BookingAddOnRepository;
 import com.zoo.booking.repository.BookingAuditRepository;
 import com.zoo.booking.repository.BookingRepository;
 import com.zoo.booking.repository.SlotRepository;
@@ -21,7 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -38,6 +42,9 @@ public class BookingService {
 
     @Autowired
     private AddOnRepository addOnRepository;
+
+    @Autowired
+    private BookingAddOnRepository bookingAddOnRepository;
 
     @Autowired
     private BookingAuditRepository bookingAuditRepository;
@@ -92,7 +99,7 @@ public class BookingService {
         }
 
         // Lock slot row using pessimistic lock to prevent concurrent overbooking
-        Slot slot = slotRepository.findById(request.getSlotId())
+        Slot slot = slotRepository.findByIdForUpdate(request.getSlotId())
                 .orElseThrow(() -> new RuntimeException("Slot not found"));
 
         // Validate request
@@ -119,40 +126,54 @@ public class BookingService {
             booking.setGuestMobileNumber(request.getGuestMobileNumber());
         }
 
-        // Store booked quantities for add-ons
-        if (request.getAddOns() != null) {
-            for (CreateBookingRequest.AddOnRequest addOnReq : request.getAddOns()) {
-                AddOn addOn = addOnRepository.findById(addOnReq.getAddOnId())
-                        .orElseThrow(() -> new RuntimeException("Add-on not found"));
+        // Reserve add-on capacity (and keep booking summary fields in sync)
+        List<ReservedAddOn> reservedAddOns = new ArrayList<>();
+        int reservedCameraQty = 0;
+        int reservedSafariQty = 0;
 
-                if ("Camera".equals(addOn.getName())) {
-                    booking.setAddOnCamera(addOnReq.getQuantity());
-                } else if ("Safari".equals(addOn.getName())) {
-                    booking.setAddOnSafari(addOnReq.getQuantity());
+        if (request.getAddOns() != null) {
+            List<CreateBookingRequest.AddOnRequest> addOnRequests = new ArrayList<>(request.getAddOns());
+            addOnRequests.sort(Comparator.comparing(CreateBookingRequest.AddOnRequest::getAddOnId));
+
+            for (CreateBookingRequest.AddOnRequest addOnReq : addOnRequests) {
+                if (addOnReq.getQuantity() == null || addOnReq.getQuantity() <= 0) {
+                    continue;
+                }
+
+                AddOn reserved = validateAndReserveAddOnCapacity(addOnReq.getAddOnId(), addOnReq.getQuantity());
+                reservedAddOns.add(new ReservedAddOn(
+                        reserved.getId(),
+                        reserved.getName(),
+                        addOnReq.getQuantity(),
+                        BigDecimal.valueOf(reserved.getPrice() != null ? reserved.getPrice() : 0.0)
+                ));
+
+                if ("Camera".equalsIgnoreCase(reserved.getName())) {
+                    reservedCameraQty += addOnReq.getQuantity();
+                } else if ("Safari".equalsIgnoreCase(reserved.getName())) {
+                    reservedSafariQty += addOnReq.getQuantity();
                 }
             }
         }
 
-        // Deduct capacity (temporary reservation)
+        booking.setAddOnCamera(reservedCameraQty);
+        booking.setAddOnSafari(reservedSafariQty);
+
+        // Deduct slot capacity (temporary reservation)
         int totalTickets = request.getAdultTickets() + request.getChildTickets();
         if (slot.getAvailableCapacity() < totalTickets) {
             throw new RuntimeException("Not enough capacity available");
         }
-
         slot.setAvailableCapacity(slot.getAvailableCapacity() - totalTickets);
-        booking.setBookedAdults(request.getAdultTickets());
-        booking.setBookedChildren(request.getChildTickets());
-
-        // Validate and deduct add-on capacity
-        if (request.getAddOns() != null) {
-            for (CreateBookingRequest.AddOnRequest addOnReq : request.getAddOns()) {
-                validateAndReserveAddOnCapacity(addOnReq.getAddOnId(), addOnReq.getQuantity());
-            }
-        }
-
-        // Save booking and slot
-        booking = bookingRepository.save(booking);
         slotRepository.save(slot);
+
+        // Save booking
+        booking = bookingRepository.save(booking);
+
+        // Persist normalized add-ons for this booking
+        for (ReservedAddOn reserved : reservedAddOns) {
+            bookingAddOnRepository.insert(booking.getId(), reserved.addOnId(), reserved.quantity(), reserved.unitPrice());
+        }
 
         // Create audit log
         createAuditLog(booking, request, priceBreakdown, "CREATED", null);
@@ -174,7 +195,7 @@ public class BookingService {
     public Booking confirmBooking(Long bookingId, String paymentId) {
         log.info("Confirming booking: {} with payment: {}", bookingId, paymentId);
 
-        Booking booking = bookingRepository.findById(bookingId)
+        Booking booking = bookingRepository.findByIdForUpdate(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         if (!"PENDING".equals(booking.getStatus())) {
@@ -190,7 +211,7 @@ public class BookingService {
         try {
             String pdfUrl = generateTicketPdf(booking);
             booking.setPdfUrl(pdfUrl);
-            booking = bookingRepository.save(booking);
+            bookingRepository.updatePdfUrl(booking.getId(), pdfUrl);
         } catch (Exception e) {
             log.error("Error generating ticket for booking: {}", bookingId, e);
         }
@@ -217,7 +238,7 @@ public class BookingService {
     public Booking failBooking(Long bookingId, String reason) {
         log.warn("Failing booking: {} - Reason: {}", bookingId, reason);
 
-        Booking booking = bookingRepository.findById(bookingId)
+        Booking booking = bookingRepository.findByIdForUpdate(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         if ("CONFIRMED".equals(booking.getStatus())) {
@@ -225,17 +246,23 @@ public class BookingService {
             throw new RuntimeException("Cannot fail a confirmed booking");
         }
 
-        // Release capacity
-        Slot slot = booking.getSlot();
+        if (!"PENDING".equals(booking.getStatus())) {
+            // Already failed/expired - avoid double releasing capacity
+            return booking;
+        }
+
+        // Release slot capacity
+        Slot slot = slotRepository.findByIdForUpdate(booking.getSlot().getId())
+                .orElseThrow(() -> new RuntimeException("Slot not found"));
         int totalTickets = booking.getAdultTickets() + booking.getChildTickets();
         slot.setAvailableCapacity(slot.getAvailableCapacity() + totalTickets);
         slotRepository.save(slot);
 
         // Release add-on capacity
-        releaseAddOnCapacity(booking);
+        releaseAddOnCapacity(booking.getId());
 
         // Update booking status
-        booking.setStatus("FAILED");
+        booking.setStatus("BOOKING_EXPIRED".equals(reason) ? "EXPIRED" : "FAILED");
         booking = bookingRepository.save(booking);
 
         createAuditLog(booking, null, null, "PAYMENT_FAILED", reason);
@@ -256,56 +283,64 @@ public class BookingService {
         if (totalTickets > slot.getAvailableCapacity()) {
             throw new RuntimeException("Not enough capacity. Available: " + slot.getAvailableCapacity());
         }
-
-        // Validate add-ons
-        if (request.getAddOns() != null) {
-            for (CreateBookingRequest.AddOnRequest addOnReq : request.getAddOns()) {
-                AddOn addOn = addOnRepository.findById(addOnReq.getAddOnId())
-                        .orElseThrow(() -> new RuntimeException("Add-on not found"));
-
-                if (addOn.getMaxLimitPerBooking() != null &&
-                    addOnReq.getQuantity() > addOn.getMaxLimitPerBooking()) {
-                    throw new RuntimeException("Add-on quantity exceeds limit: " + addOn.getName());
-                }
-            }
-        }
     }
 
     /**
      * Validate add-on capacity and reserve it.
      */
-    private void validateAndReserveAddOnCapacity(Long addOnId, Integer quantity) {
-        AddOn addOn = addOnRepository.findById(addOnId)
+    private AddOn validateAndReserveAddOnCapacity(Long addOnId, Integer quantity) {
+        AddOn addOn = addOnRepository.findByIdForUpdate(addOnId)
                 .orElseThrow(() -> new RuntimeException("Add-on not found"));
 
+        if (Boolean.FALSE.equals(addOn.getIsActive())) {
+            throw new RuntimeException("Add-on is not active: " + addOn.getName());
+        }
+
+        if (addOn.getMaxLimitPerBooking() != null && quantity > addOn.getMaxLimitPerBooking()) {
+            throw new RuntimeException("Add-on quantity exceeds limit: " + addOn.getName());
+        }
+
         if (addOn.getAvailableCapacity() != null) {
-            int availableSpace = addOn.getAvailableCapacity() - addOn.getBookedCapacity();
+            int currentBooked = addOn.getBookedCapacity() != null ? addOn.getBookedCapacity() : 0;
+            int availableSpace = addOn.getAvailableCapacity() - currentBooked;
             if (quantity > availableSpace) {
                 throw new RuntimeException("Add-on capacity exhausted: " + addOn.getName());
             }
 
-            addOn.setBookedCapacity(addOn.getBookedCapacity() + quantity);
+            addOn.setBookedCapacity(currentBooked + quantity);
             addOnRepository.save(addOn);
         }
+
+        return addOn;
     }
 
     /**
      * Release add-on capacity when booking fails.
      */
-    private void releaseAddOnCapacity(Booking booking) {
-        if (booking.getBookedAddOnCamera() != null && booking.getBookedAddOnCamera() > 0) {
-            Optional<AddOn> camera = addOnRepository.findByName("Camera");
-            if (camera.isPresent()) {
-                camera.get().setBookedCapacity(camera.get().getBookedCapacity() - booking.getBookedAddOnCamera());
-                addOnRepository.save(camera.get());
-            }
+    private void releaseAddOnCapacity(Long bookingId) {
+        List<BookingAddOnRepository.BookingAddOnReservation> reservations = bookingAddOnRepository.findByBookingId(bookingId);
+        if (reservations.isEmpty()) {
+            return;
         }
 
-        if (booking.getBookedAddOnSafari() != null && booking.getBookedAddOnSafari() > 0) {
-            Optional<AddOn> safari = addOnRepository.findByName("Safari");
-            if (safari.isPresent()) {
-                safari.get().setBookedCapacity(safari.get().getBookedCapacity() - booking.getBookedAddOnSafari());
-                addOnRepository.save(safari.get());
+        reservations.sort(Comparator.comparing(BookingAddOnRepository.BookingAddOnReservation::addOnId));
+
+        for (BookingAddOnRepository.BookingAddOnReservation reservation : reservations) {
+            if (reservation.quantity() == null || reservation.quantity() <= 0) {
+                continue;
+            }
+
+            AddOn addOn = addOnRepository.findByIdForUpdate(reservation.addOnId())
+                    .orElse(null);
+            if (addOn == null) {
+                continue;
+            }
+
+            if (addOn.getAvailableCapacity() != null) {
+                int currentBooked = addOn.getBookedCapacity() != null ? addOn.getBookedCapacity() : 0;
+                int updatedBooked = Math.max(0, currentBooked - reservation.quantity());
+                addOn.setBookedCapacity(updatedBooked);
+                addOnRepository.save(addOn);
             }
         }
     }
@@ -318,7 +353,7 @@ public class BookingService {
                                String status, String errorMessage) {
         try {
             BookingAudit audit = new BookingAudit();
-            audit.setBooking(booking);
+            audit.setBookingId(booking.getId());
             audit.setStatus(status);
             audit.setErrorMessage(errorMessage);
 
@@ -343,5 +378,7 @@ public class BookingService {
         String fileName = ticketService.generatePdfTicket(booking);
         return "/api/bookings/ticket/" + fileName;
     }
+
+    private record ReservedAddOn(Long addOnId, String addOnName, Integer quantity, BigDecimal unitPrice) {}
 }
 

@@ -30,19 +30,35 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
+            // Skip JWT processing for public endpoints that don't require authentication
+            if (isPublicEndpoint(request.getRequestURI())) {
+                logger.debug("🔓 Public endpoint accessed: {}", request.getRequestURI());
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            if (jwt != null) {
+                if (jwtUtils.validateJwtToken(jwt)) {
+                    String username = jwtUtils.getUserNameFromJwtToken(jwt);
+                    logger.debug("✅ JWT Token validated for user: {}", username);
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    logger.debug("🔐 User authenticated: {} with roles: {}", username, userDetails.getAuthorities());
+                } else {
+                    logger.warn("⚠️ Invalid JWT Token provided: {}", jwt.substring(0, Math.min(20, jwt.length())) + "...");
+                }
+            } else {
+                logger.debug("⚠️ No JWT token found in Authorization header for path: {}", request.getRequestURI());
             }
         } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
+            logger.error("❌ Cannot set user authentication: {}", e.getMessage(), e);
         }
 
         filterChain.doFilter(request, response);
@@ -56,5 +72,22 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         return null;
+    }
+
+    /**
+     * Check if the request is for a public endpoint that doesn't require authentication
+     */
+    private boolean isPublicEndpoint(String requestURI) {
+        // Public endpoints that don't require JWT tokens
+        return requestURI.startsWith("/api/auth/") ||
+               requestURI.startsWith("/api/public/") ||
+               requestURI.equals("/api/slots/available") ||
+               requestURI.equals("/api/bookings/initiate") ||
+               requestURI.startsWith("/api/bookings/confirm/") ||
+               requestURI.startsWith("/api/bookings/ticket/") ||
+               requestURI.equals("/swagger-ui.html") ||
+               requestURI.startsWith("/swagger-ui/") ||
+               requestURI.startsWith("/v3/api-docs") ||
+               requestURI.startsWith("/api-docs");
     }
 }

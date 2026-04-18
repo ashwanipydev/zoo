@@ -62,8 +62,6 @@ public class PricingService {
         List<PriceBreakdownResponse.AddOnBreakdown> addOnsList = new ArrayList<>();
 
         if (request.getAddOns() != null && !request.getAddOns().isEmpty()) {
-            int totalTickets = adultCount + childCount;
-
             for (CreateBookingRequest.AddOnRequest addOnRequest : request.getAddOns()) {
                 AddOn addOn = addOnRepository.findById(addOnRequest.getAddOnId())
                         .orElseThrow(() -> new RuntimeException("Add-on not found: " + addOnRequest.getAddOnId()));
@@ -77,11 +75,7 @@ public class PricingService {
 
                 // Calculate add-on subtotal based on type
                 Double addOnSubtotal;
-                if ("PER_PERSON".equals(addOn.getType())) {
-                    addOnSubtotal = addOn.getPrice() * totalTickets * addOnRequest.getQuantity();
-                } else { // PER_BOOKING
-                    addOnSubtotal = addOn.getPrice() * addOnRequest.getQuantity();
-                }
+                addOnSubtotal = addOn.getPrice() * addOnRequest.getQuantity();
 
                 addOnBreakdown.setSubtotal(addOnSubtotal);
                 addOnsList.add(addOnBreakdown);
@@ -117,9 +111,9 @@ public class PricingService {
         // Fallback to default price from ticket_type table
         // For now, using hardcoded defaults - can be moved to database
         if ("ADULT".equals(ticketType)) {
-            return 100.0; // ₹100 for adults
+            return 800.0; // ₹800 for adults
         } else if ("CHILD".equals(ticketType)) {
-            return 50.0; // ₹50 for children
+            return 500.0; // ₹500 for children
         }
 
         throw new RuntimeException("No pricing found for ticket type: " + ticketType);

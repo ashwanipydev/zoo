@@ -1,6 +1,7 @@
 package com.zoo.booking.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,9 +21,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.zoo.booking.security.jwt.AuthEntryPointJwt;
 import com.zoo.booking.security.jwt.AuthTokenFilter;
-import com.zoo.booking.security.services.UserDetailsServiceImpl;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -32,6 +35,9 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
+    @Value("#{'${app.cors.allowed-origins:http://localhost:3000}'.split(',')}")
+    private List<String> corsAllowedOriginPatterns;
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -40,8 +46,6 @@ public class WebSecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
-        
-        // Remove setUserDetailsService as it's passed via constructor
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -60,11 +64,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> 
                     auth.requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/signin").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/slots/available").permitAll()
                         .requestMatchers("/api/bookings/initiate").permitAll()
@@ -85,7 +91,10 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOriginPattern("*");
+        configuration.setAllowedOriginPatterns(corsAllowedOriginPatterns.stream()
+                .map(String::trim)
+                .filter(origin -> !origin.isBlank())
+                .toList());
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 

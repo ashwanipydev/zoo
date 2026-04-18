@@ -1,37 +1,22 @@
-package in.dataman.transactionService;
+package com.zoo.booking.config;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import com.razorpay.*;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import com.razorpay.Order;
-import com.razorpay.Payment;
-import com.razorpay.RazorpayClient;
-import com.razorpay.RazorpayException;
-import com.razorpay.Utils;
-
-import in.dataman.Enums.PaymentStatus;
-import in.dataman.transactionEntity.PaymentDetail;
-import in.dataman.transactionRepo.DonationRepository;
-import in.dataman.transactionRepo.PaymentDetailRepository;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RazorpayService {
 
 	private final RazorpayClient razorpayClient;
-	private final PaymentDetailRepository paymentDetailRepository;
-	private final DonationRepository donationRepository;
+
 
 	private static final String RAZORPAY_KEY_SECRET = "el24erdmUWFxb1Mz7U3vGgV1";
 
-	public RazorpayService(RazorpayClient razorpayClient, PaymentDetailRepository paymentDetailRepository,
-			DonationRepository donationRepository) {
+	public RazorpayService(RazorpayClient razorpayClient) {
 		this.razorpayClient = razorpayClient;
-		this.paymentDetailRepository = paymentDetailRepository;
-		this.donationRepository = donationRepository;
 	}
 
 	// Create Razorpay Order
@@ -80,40 +65,6 @@ public class RazorpayService {
 					return Map.of("error", "Invalid Signature Verification");
 				}
 			}
-
-			
-			  // ✅ Fetch PaymentDetail using orderId
-            Optional<PaymentDetail> paymentDetailOpt = paymentDetailRepository.findByResTransRefId(orderId);
-            if (paymentDetailOpt.isEmpty()) {
-                return Map.of("error", "No payment details found for order ID: " + orderId);
-            }
-
-            PaymentDetail paymentDetail = paymentDetailOpt.get();
-
-            // ✅ Update payment status
-            switch (status) {
-                case "captured":
-                    paymentDetail.setStatus(PaymentStatus.Success.getCode());
-                    break;
-                case "failed":
-                    paymentDetail.setStatus(PaymentStatus.Fail.getCode());
-                    break;
-                default:
-                    paymentDetail.setStatus(PaymentStatus.Pending.getCode());
-                    break;
-            }
-
-            paymentDetail.setResPayMode(paymentMethod);
-            paymentDetail.setResBankTransrefNo(paymentId);
-            paymentDetailRepository.save(paymentDetail);
-
-            // ✅ Update donation status if exists
-            donationRepository.findById(paymentDetail.getDocId()).ifPresent(donation -> {
-                donation.setStatus(paymentDetail.getStatus());
-                donationRepository.save(donation);
-            });
-
-			
 
 			return Map.of("paymentId", paymentId, "status", status, "message", "Payment status updated successfully");
 		} catch (Exception e) {

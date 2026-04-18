@@ -39,8 +39,6 @@ public class BookingExpiryScheduler {
                 try {
                     // Fail the booking and release capacity
                     bookingService.failBooking(booking.getId(), "BOOKING_EXPIRED");
-                    booking.setStatus("EXPIRED");
-                    bookingRepository.save(booking);
 
                     log.info("Expired booking {} has been processed", booking.getId());
                 } catch (Exception e) {

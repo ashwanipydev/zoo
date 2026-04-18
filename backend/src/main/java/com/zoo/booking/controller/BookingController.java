@@ -110,8 +110,17 @@ public class BookingController {
     @Operation(summary = "Download Ticket", description = "Download ticket PDF by file name")
     public ResponseEntity<Resource> downloadTicket(@PathVariable String fileName) {
         try {
-            Path path = Paths.get("tickets/" + fileName);
-            Resource resource = new UrlResource(path.toUri());
+            if (fileName == null || fileName.isBlank()) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Path ticketDir = Paths.get("tickets").toAbsolutePath().normalize();
+            Path resolved = ticketDir.resolve(fileName).normalize();
+            if (!resolved.startsWith(ticketDir)) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Resource resource = new UrlResource(resolved.toUri());
 
             if (resource.exists() || resource.isReadable()) {
                 return ResponseEntity.ok()

@@ -62,22 +62,32 @@ public class AuthController {
         @ApiResponse(responseCode = "401", description = "Invalid credentials")
     })
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, 
-                                                 userDetails.getId(), 
-                                                 userDetails.getEmail(), 
-                                                 roles));
+            System.out.println("✅ User logged in: " + userDetails.getEmail() + " with roles: " + roles);
+            return ResponseEntity.ok(new JwtResponse(jwt,
+                                                     userDetails.getId(),
+                                                     userDetails.getEmail(),
+                                                     roles));
+        } catch (org.springframework.security.core.AuthenticationException e) {
+            System.err.println("❌ Authentication failed for email: " + loginRequest.getEmail());
+            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Error: Invalid email or password. Please check your credentials and try again."));
+        } catch (Exception e) {
+            System.err.println("❌ Unexpected error during login: " + e.getMessage());
+            return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse("Error: An unexpected error occurred during login. Please try again later."));
+        }
     }
 
     @PostMapping("/signup")
@@ -100,28 +110,11 @@ public class AuthController {
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
         user.setMobileNumber(signUpRequest.getMobileNumber());
 
-        Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                case "admin":
-                    Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(adminRole);
-                    break;
-                default:
-                    Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(userRole);
-                }
-            });
-        }
+        // Production safety: never accept roles from a public signup request.
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
 
         user.setRoles(roles);
         userRepository.save(user);

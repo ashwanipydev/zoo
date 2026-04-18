@@ -1,9 +1,8 @@
-package in.dataman.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.zoo.booking.config;
 
 import com.razorpay.RazorpayClient;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RazorpayConfig {
