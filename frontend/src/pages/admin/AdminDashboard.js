@@ -9,6 +9,7 @@ const AdminDashboard = () => {
     const [stats, setStats] = useState({
         todayBookings: 0,
         totalRevenue: 0,
+        todayRevenue: 0,
         occupancyRate: 0,
         activeSlots: 0,
         totalUsers: 0,
@@ -66,11 +67,12 @@ const AdminDashboard = () => {
 
                 setStats({
                     todayBookings: summaryData.todayBookings || todayBookingsArr.length,
+                    totalRevenue: summaryData.totalRevenue || totalRev,
                     todayRevenue: summaryData.todayRevenue || totalRev,
                     occupancyRate: summaryData.occupancyRate || occupancy,
                     activeSlots: summaryData.activeSlots || activeCount,
-                    totalUsers: summaryData.totalUsers,
-                    totalStaff: summaryData.totalStaff
+                    totalUsers: summaryData.totalUsers || 0,
+                    totalStaff: summaryData.totalStaff || 0
                 });
 
                 const sortedBookings = [...allBookings].sort((a,b) => b.id - a.id).slice(0, 5);
@@ -142,7 +144,7 @@ const AdminDashboard = () => {
 
                 <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm transition-transform hover:scale-[1.02]">
                     <p className="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1">Total Revenue</p>
-                    <h3 className="text-2xl font-black text-on-surface">₹{stats.totalRevenue.toLocaleString()}</h3>
+                    <h3 className="text-2xl font-black text-on-surface">₹{(stats.totalRevenue || 0).toLocaleString()}</h3>
                 </div>
 
                 <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm transition-transform hover:scale-[1.02]">
