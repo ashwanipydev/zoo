@@ -1,68 +1,64 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import AdminSidebar from './AdminSidebar';
 
 const AdminLayout = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user } = useAuth();
+  const initials = user?.fullName
+    ? user.fullName.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase()
+    : 'BA';
 
-    return (
-        <div className="bg-background text-on-surface antialiased flex min-h-screen font-public-sans">
-            <AdminSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-            
-            {/* Main Canvas */}
-            <main className="flex-1 min-h-screen relative pb-12 transition-all duration-300 md:ml-64">
-                {/* TopNavBar Component */}
-                <header className="fixed top-0 right-0 left-0 md:left-64 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-[0_12px_32px_-4px_rgba(26,28,25,0.06)] flex justify-between items-center px-6 md:px-12 h-20">
-                    <div className="flex items-center gap-4">
-                        {/* Mobile Toggle */}
-                        <button 
-                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                            className="p-2 -ml-2 text-on-surface-variant md:hidden"
-                        >
-                            <span className="material-symbols-outlined">{isSidebarOpen ? 'close' : 'menu'}</span>
-                        </button>
+  return (
+    <div className="min-h-screen bg-background text-on-surface antialiased">
+      <AdminSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-on-surface-variant/60 tracking-widest flex items-center gap-2">
-                                REPORTS <span className="material-symbols-outlined text-[12px]">chevron_right</span> DASHBOARD
-                            </span>
-                            <h2 className="text-sm md:text-lg font-black text-primary dark:text-[#FAFAF5]">Civic Naturalist Zoo</h2>
-                        </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-4 md:gap-8">
-                        <div className="hidden lg:flex gap-6">
-                            <a href="#" className="text-primary dark:text-[#B9F395] border-b-2 border-primary-container text-sm uppercase tracking-widest font-semibold py-7">Overview</a>
-                            <a href="#" className="text-on-surface-variant dark:text-stone-400 text-sm uppercase tracking-widest font-semibold py-7 hover:text-primary transition-all">Reports</a>
-                            <a href="#" className="text-on-surface-variant dark:text-stone-400 text-sm uppercase tracking-widest font-semibold py-7 hover:text-primary transition-all">Archive</a>
-                        </div>
-                        
-                        <div className="flex items-center gap-2 md:gap-4 border-l border-outline-variant/20 pl-4 md:pl-8">
-                            <button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">search</button>
-                            <button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all relative">
-                                notifications
-                                <span className="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
-                            </button>
-                            <img 
-                                alt="Admin" 
-                                className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-primary-container object-cover" 
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAMkixDGM0EO1ayQBFELIxkvjQyQoRdI-AezKfYeEJKvKhbSaCt3GkbhAKE1jzf007LF4XUGQM1E3xfEOoUfEfi1AS-n289tFgNPPbOPC19SwZitjsD4GsWt4GAY8UfbdvCvrE-EBiaXc6_7uBhN6e2LLr-aEnC83oIE42E9lAzJh2JEjJb0RvGA05fxH5Vc80ok9RoT88eN9NgYzgmP8Tq5cY5S6NxNw5RkPLybwnzeIAwmu4PqRrW0Oq3UHup7t-7Cy5NsWRSOx7"
-                            />
-                        </div>
-                    </div>
-                </header>
+      <main className="relative min-h-screen md:ml-72">
+        <header className="fixed left-0 right-0 top-0 z-40 h-20 bg-background/85 backdrop-blur-xl md:left-72">
+          <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 md:px-12">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="flex h-11 w-11 items-center justify-center rounded-2xl bg-surface-container-low text-primary md:hidden"
+              >
+                <span className="material-symbols-outlined">
+                  {isSidebarOpen ? 'close' : 'menu'}
+                </span>
+              </button>
 
-                <div className="pt-32 px-6 md:px-12 max-w-7xl mx-auto space-y-10">
-                    <Outlet />
-                </div>
-                
-                {/* Contextual FAB */}
-                <button className="fixed bottom-10 right-10 w-14 h-14 md:w-16 md:h-16 bg-primary text-on-primary rounded-full shadow-[0_12px_32px_-4px_rgba(26,28,25,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-30">
-                    <span className="material-symbols-outlined text-2xl md:text-3xl">chat_bubble</span>
-                </button>
-            </main>
+              <div>
+                <p className="label mb-1">Status Dashboard</p>
+                <h2 className="text-sm font-black tracking-tight text-primary md:text-xl">
+                  Civic Naturalist Archive
+                </h2>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 md:gap-4">
+              <button className="hidden items-center gap-2 rounded-full bg-surface-container-low px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-on-surface-variant lg:flex">
+                Overview
+              </button>
+              <button className="flex h-11 w-11 items-center justify-center rounded-2xl bg-surface-container-low text-primary">
+                <span className="material-symbols-outlined text-[20px]">search</span>
+              </button>
+              <button className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-surface-container-low text-primary">
+                <span className="material-symbols-outlined text-[20px]">notifications</span>
+                <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-error" />
+              </button>
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-xs font-black text-background shadow-organic-sm">
+                {initials}
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-16 pt-24 md:px-12">
+          <Outlet />
         </div>
-    );
+      </main>
+    </div>
+  );
 };
 
 export default AdminLayout;

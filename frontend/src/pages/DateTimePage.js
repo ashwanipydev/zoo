@@ -89,8 +89,8 @@ const DateTimePage = () => {
     return (
         <div className="bg-background text-on-surface min-h-screen flex flex-col">
             {/* TopNavBar */}
-            <nav className="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md shadow-[0px_12px_32px_rgba(44,52,51,0.06)] flex justify-between items-center px-12 py-4 max-w-full mx-auto font-public-sans tracking-tight text-on-surface">
-                <Link to="/" className="text-2xl font-bold tracking-tighter text-emerald-900 dark:text-emerald-50">
+            <nav className="fixed top-0 w-full z-50 flex items-center justify-between bg-stone-50/80 px-4 py-4 font-public-sans tracking-tight text-on-surface shadow-[0px_12px_32px_rgba(44,52,51,0.06)] backdrop-blur-md sm:px-6 lg:px-12 dark:bg-stone-950/80">
+                <Link to="/" className="text-lg font-bold tracking-tighter text-emerald-900 sm:text-2xl dark:text-emerald-50">
                     Civic Naturalist Zoo
                 </Link>
                 <div className="hidden md:flex items-center space-x-8">
@@ -99,17 +99,19 @@ const DateTimePage = () => {
                     <a className="text-emerald-800 dark:text-emerald-400 font-semibold border-b-2 border-emerald-800" href="#">Tickets</a>
                     <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 transition-colors" href="#">Visit</a>
                 </div>
-                <div className="flex items-center space-x-6">
-                    <Link to="/login" className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 transition-colors">Sign In</Link>
-                    <button className="bg-primary text-on-primary px-6 py-2 rounded-lg font-semibold hover:bg-primary-dim transition-all scale-95 duration-200 ease-in-out">Support Us</button>
+                <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
+                    <Link to="/login" className="text-sm text-stone-600 transition-colors hover:text-emerald-700 dark:text-stone-400 sm:text-base">Sign In</Link>
+                    <button className="hidden rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-on-primary transition-all duration-200 ease-in-out hover:bg-primary-dim sm:block sm:px-6">
+                        Support Us
+                    </button>
                 </div>
             </nav>
 
             {/* Main Content Canvas */}
-            <main className="flex-grow pt-32 pb-20 px-12 max-w-7xl mx-auto w-full">
+            <main className="mx-auto w-full max-w-7xl flex-grow px-4 pb-10 pt-20 sm:px-6 lg:px-12">
                 {/* Progress Indicator */}
-                <div className="mb-16">
-                    <div className="flex items-center justify-between max-w-2xl mx-auto mb-4">
+                <div className="mb-8">
+                    <div className="mx-auto mb-4 flex max-w-2xl items-center justify-between">
                         <div className="flex flex-col items-center gap-2">
                             <div className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">1</div>
                             <span className="text-xs font-bold uppercase tracking-widest text-primary">Schedule</span>
@@ -125,8 +127,8 @@ const DateTimePage = () => {
                             <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Review</span>
                         </div>
                     </div>
-                    <h1 className="text-4xl font-extrabold tracking-tight text-center text-on-surface mt-8">Plan Your Expedition</h1>
-                    <p className="text-on-surface-variant text-center mt-2 max-w-xl mx-auto">Select your preferred date and entry window to ensure an intimate experience with our flora and fauna.</p>
+                    <h1 className="mt-4 text-center text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">Plan Your Expedition</h1>
+                    <p className="text-on-surface-variant text-center mt-1 max-w-xl mx-auto text-sm">Select your preferred date and entry window for a curated experience.</p>
                 </div>
 
                 <div className="asymmetric-grid">
@@ -163,13 +165,13 @@ const DateTimePage = () => {
                                 ))}
 
                                 {daysInMonth.map((day, i) => {
-                                    if (!day) return <div key={i} className="h-20 bg-surface-dim opacity-40 rounded flex items-center justify-center text-on-surface-variant"></div>;
+                                    if (!day) return <div key={i} className="h-12 bg-surface-dim opacity-40 rounded flex items-center justify-center text-on-surface-variant"></div>;
                                     const isValid = isDateValid(day);
                                     const isSelected = selectedDate === day;
 
                                     if (!isValid) {
                                         return (
-                                            <div key={i} className="h-20 bg-surface-dim opacity-40 rounded flex items-center justify-center text-on-surface-variant/30 text-sm">
+                                            <div key={i} className="h-12 bg-surface-dim opacity-40 rounded flex items-center justify-center text-on-surface-variant/30 text-sm">
                                                 {day}
                                             </div>
                                         );
@@ -177,16 +179,15 @@ const DateTimePage = () => {
 
                                     if (isSelected) {
                                         return (
-                                            <div key={i} onClick={() => setSelectedDate(day)} className="h-20 bg-primary text-on-primary rounded flex flex-col items-center justify-center cursor-pointer relative shadow-lg">
-                                                <span className="font-bold">{day}</span>
-                                                <span className="text-[10px] uppercase font-bold tracking-tighter mt-1">Selected</span>
+                                            <div key={i} onClick={() => setSelectedDate(day)} className="h-12 bg-primary text-on-primary rounded flex flex-col items-center justify-center cursor-pointer relative shadow-lg">
+                                                <span className="font-bold text-sm">{day}</span>
                                             </div>
                                         );
                                     }
 
                                     return (
-                                        <div key={i} onClick={() => setSelectedDate(day)} className="h-20 bg-surface-container-low hover:bg-surface-container transition-colors rounded flex flex-col items-center justify-center cursor-pointer">
-                                            <span className="font-bold">{day}</span>
+                                        <div key={i} onClick={() => setSelectedDate(day)} className="h-12 bg-surface-container-low hover:bg-surface-container transition-colors rounded flex flex-col items-center justify-center cursor-pointer">
+                                            <span className="font-bold text-sm">{day}</span>
                                         </div>
                                     );
                                 })}
@@ -194,7 +195,7 @@ const DateTimePage = () => {
                         </div>
 
                         {/* Naturalist Tips (Bento-lite) */}
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div className="bg-tertiary-container p-6 rounded-xl flex gap-4 items-start">
                                 <div className="bg-surface-container-lowest p-2 rounded-lg">
                                     <span className="material-symbols-outlined text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>light_mode</span>
@@ -218,7 +219,7 @@ const DateTimePage = () => {
 
                     {/* Right: Entry Windows */}
                     <section className="flex flex-col gap-8">
-                        <div className="bg-surface-container-low p-8 rounded-xl flex flex-col h-full border border-outline-variant/10">
+                        <div className="flex h-full flex-col rounded-xl border border-outline-variant/10 bg-surface-container-low p-6 sm:p-8">
                             <h3 className="text-lg font-bold tracking-tight mb-6 flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary">schedule</span>
                                 Available Entry Windows
@@ -314,36 +315,7 @@ const DateTimePage = () => {
                     </section>
                 </div>
 
-                {/* Featured Imagery Cluster */}
-                <section className="mt-24">
-                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-8 text-center">Seasonal Highlights</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[400px]">
-                        <div className="md:col-span-5 h-[300px] md:h-full rounded-xl overflow-hidden relative group">
-                            <img className="w-full h-full object-cover grayscale-[0.2] group-hover:scale-105 transition-transform duration-700" alt="Lion Pride Watch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOVqXft81EZWWu-zKyKKQlo22PBKBHDTcdWI17j20-eDzEWJH_10cpPNNaPGgXqA0fF30S1eu00HV0QoGAhFEpPsQoL-_gBd30kX0Z0GbWp8Qd9l7MjO_estzW6Ow42MsmFHO1cr7uX2i236QDuTtDeBdSlp6-4i-ByyiEQFRi4U8fCEWcA6aU3DdJHmQd4FiQSWCNdBSAUujalkpNFyFlvej8jH2DIUOU4WzgUiTz-Tz7xQ1WRaXJAGSRFwJ3qbHRf1h-mB-ruAY" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 text-white">
-                                <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">African Savanna</span>
-                                <h4 className="text-xl font-bold">Lion Pride Watch</h4>
-                            </div>
-                        </div>
-                        <div className="md:col-span-3 h-[300px] md:h-full rounded-xl overflow-hidden relative group">
-                            <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Fern Gully" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFcxDZZXEr0vsZFwH-r6QUZW48en8lXjaP4mJs4yGNjMiRWvpxqkEquxBWPvdmX-n3NxLluHBBjiD8zZ6IU6EwN37XKNggW6BzYYNotTXFpnLp3aUWHtLBWMglvGMEx4m7HyV7QZ6WNtfbfzTVngPE6D405M30v-vjdPp1QdNnF_vUzIDevlCGlP024y5mGxuKFii5CzWmlDjPQgdBGDk1KZAglSwduVb2Ril9DcAKG3U41w2JNi3ep2pqz-_AvLQuPhWuxnJ_I4E" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 text-white">
-                                <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">Botanical</span>
-                                <h4 className="text-xl font-bold">Fern Gully</h4>
-                            </div>
-                        </div>
-                        <div className="md:col-span-4 h-[300px] md:h-full rounded-xl overflow-hidden relative group">
-                            <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Red Panda Nursery" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqD4J-xPwrFfIlHiBxtQjXfxm8_KhKPO-FbWKc5_rh-4R6b2muOlzSkx1lbOS-QD0VrjILgOh7x8SHtKC4bSvMEUOCAwuL2lZZR2qKnegIjxhZBRCWc3SCURjWBOa6BxMiNjIBQAaAsPemIJXI0P4CKmU_l74hZ_m2_cios9BiP6P2j9r98LgXZOGNQ0jmILS-3BMT-oAF8M5aROc7fPrt9cJmwe0b6j3h7sXXXpLxIRGJ-6D7-bDLJ5IPziU1k4eppk6VWPA_cIc" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 text-white">
-                                <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">Asia Trail</span>
-                                <h4 className="text-xl font-bold">Red Panda Nursery</h4>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+
             </main>
 
             {/* Footer */}

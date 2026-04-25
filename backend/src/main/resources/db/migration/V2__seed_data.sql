@@ -62,12 +62,12 @@ VALUES ('2026-04-18', '14:00:00', '16:00:00', 80, 15, TRUE)
 ON CONFLICT DO NOTHING;
 
 -- Add-ons
-INSERT INTO add_on_master (name, type, price, max_limit_per_booking, available_capacity, booked_capacity, is_active)
-VALUES ('Camera', 'PER_BOOKING', 300.00, 1, 50, 0, TRUE)
+INSERT INTO add_on_master (name, type, price, max_limit_per_booking, available_capacity, booked_capacity, description, image_url, is_active)
+VALUES ('Camera', 'PER_BOOKING', 300.00, 1, 50, 0, 'Professional photography permit for botanical captures.', 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32', TRUE)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO add_on_master (name, type, price, max_limit_per_booking, available_capacity, booked_capacity, is_active)
-VALUES ('Safari', 'PER_PERSON', 1000.00, 10, 30, 0, TRUE)
+INSERT INTO add_on_master (name, type, price, max_limit_per_booking, available_capacity, booked_capacity, description, image_url, is_active)
+VALUES ('Safari', 'PER_PERSON', 1000.00, 10, 30, 0, 'Guided wilderness expedition through the core jungle zones.', 'https://images.unsplash.com/photo-1549366021-9f761d450615', TRUE)
 ON CONFLICT DO NOTHING;
 
 -- Slot pricing (ADULT/CHILD) per slot window

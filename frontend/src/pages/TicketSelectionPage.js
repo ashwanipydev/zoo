@@ -82,8 +82,8 @@ const TicketSelectionPage = () => {
     return (
         <div className="bg-background text-on-surface min-h-screen flex flex-col">
             {/* TopNavBar */}
-            <nav className="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md shadow-[0px_12px_32px_rgba(44,52,51,0.06)] flex justify-between items-center px-12 py-4 max-w-full mx-auto font-public-sans tracking-tight text-on-surface">
-                <Link to="/" className="text-2xl font-bold tracking-tighter text-emerald-900 dark:text-emerald-50">
+            <nav className="fixed top-0 z-50 flex w-full items-center justify-between bg-stone-50/80 px-4 py-4 font-public-sans tracking-tight text-on-surface shadow-[0px_12px_32px_rgba(44,52,51,0.06)] backdrop-blur-md sm:px-6 lg:px-12 dark:bg-stone-950/80">
+                <Link to="/" className="text-lg font-bold tracking-tighter text-emerald-900 sm:text-2xl dark:text-emerald-50">
                     Civic Naturalist Zoo
                 </Link>
                 <div className="hidden md:flex items-center space-x-8">
@@ -92,15 +92,17 @@ const TicketSelectionPage = () => {
                     <a className="text-emerald-800 dark:text-emerald-400 font-semibold border-b-2 border-emerald-800" href="#">Tickets</a>
                     <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 transition-colors" href="#">Visit</a>
                 </div>
-                <div className="flex items-center space-x-6">
-                    <Link to="/login" className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 transition-colors">Sign In</Link>
-                    <button className="bg-primary text-on-primary px-6 py-2 rounded-lg font-semibold hover:bg-primary-dim transition-all scale-95 duration-200 ease-in-out">Support Us</button>
+                <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
+                    <Link to="/login" className="text-sm text-stone-600 transition-colors hover:text-emerald-700 dark:text-stone-400 sm:text-base">Sign In</Link>
+                    <button className="hidden rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-on-primary transition-all duration-200 hover:bg-primary-dim sm:block sm:px-6">
+                        Support Us
+                    </button>
                 </div>
             </nav>
 
-            <main className="min-h-screen px-6 lg:px-12 pt-32 pb-12 flex-grow">
+            <main className="flex-grow px-4 pb-12 pt-20 sm:px-6 lg:px-12">
                 {/* Progress Indicator */}
-                <div className="max-w-7xl mx-auto mb-16">
+                <div className="max-w-7xl mx-auto mb-8">
                     <div className="flex items-center justify-between max-w-xl mx-auto">
                         <div className="flex flex-col items-center gap-2">
                             <span className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">1</span>
@@ -123,19 +125,19 @@ const TicketSelectionPage = () => {
                     {/* Left Column: Selection Content */}
                     <div className="lg:col-span-8 space-y-12">
                         <section>
-                            <h1 className="text-4xl font-bold tracking-tighter text-on-surface mb-2">Select Your Tickets</h1>
+                            <h1 className="mb-2 text-3xl font-bold tracking-tighter text-on-surface md:text-4xl">Select Your Tickets</h1>
                             <p className="text-on-surface-variant max-w-2xl">Step 2: Choose the admission types for your party. All tickets include access to our conservation exhibits and botanical walk.</p>
                         </section>
 
                         {/* Ticket Counters */}
                         <div className="space-y-4">
-                            <div className="p-8 bg-surface-container-low flex justify-between items-center group transition-colors hover:bg-surface-container rounded-xl">
+                            <div className="group flex flex-col justify-between gap-6 rounded-xl bg-surface-container-low p-6 transition-colors hover:bg-surface-container sm:flex-row sm:items-center sm:p-8">
                                 <div>
                                     <h3 className="text-xl font-bold tracking-tight text-on-surface">Adult</h3>
                                     <p className="text-sm text-on-surface-variant">Ages 13 and above</p>
                                     <p className="mt-2 font-bold text-primary">₹{adultPrice}.00</p>
                                 </div>
-                                <div className="flex items-center gap-6">
+                                <div className="flex items-center justify-between gap-4 sm:justify-start sm:gap-6">
                                     <button onClick={() => setAdults(Math.max(1, adults - 1))} className="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:border-primary-container transition-all text-on-surface">
                                         <span className="material-symbols-outlined">remove</span>
                                     </button>
@@ -145,13 +147,13 @@ const TicketSelectionPage = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="p-8 bg-surface-container-low flex justify-between items-center group transition-colors hover:bg-surface-container rounded-xl">
+                            <div className="group flex flex-col justify-between gap-6 rounded-xl bg-surface-container-low p-6 transition-colors hover:bg-surface-container sm:flex-row sm:items-center sm:p-8">
                                 <div>
                                     <h3 className="text-xl font-bold tracking-tight text-on-surface">Child</h3>
                                     <p className="text-sm text-on-surface-variant">Ages 3 to 12. Under 3 are free.</p>
                                     <p className="mt-2 font-bold text-primary">₹{childPrice}.00</p>
                                 </div>
-                                <div className="flex items-center gap-6">
+                                <div className="flex items-center justify-between gap-4 sm:justify-start sm:gap-6">
                                     <button onClick={() => setChildren(Math.max(0, children - 1))} className="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:border-primary-container transition-all text-on-surface">
                                         <span className="material-symbols-outlined">remove</span>
                                     </button>
@@ -173,7 +175,7 @@ const TicketSelectionPage = () => {
                                         className={`bg-surface-container-lowest overflow-hidden group rounded-2xl shadow-sm border transition-all cursor-pointer ${selectedAddons[addon.id] ? 'border-primary ring-2 ring-primary/20' : 'border-outline-variant/20 hover:border-primary/50'}`}
                                         onClick={() => toggleAddon(addon.id)}
                                     >
-                                        <div className="h-48 w-full relative overflow-hidden">
+                                        <div className="h-36 w-full relative overflow-hidden">
                                             {addon.imageUrl ? (
                                                 <img alt={addon.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src={addon.imageUrl} />
                                             ) : (
@@ -214,7 +216,7 @@ const TicketSelectionPage = () => {
 
                     {/* Right Column: Sidebar Booking Summary */}
                     <aside className="lg:col-span-4">
-                        <div className="sticky top-24 bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(44,52,51,0.06)] space-y-8 border border-outline-variant/10">
+                        <div className="lg:sticky lg:top-24 bg-surface-container-lowest p-6 sm:p-8 rounded-xl shadow-[0px_12px_32px_rgba(44,52,51,0.06)] space-y-8 border border-outline-variant/10">
                             <div>
                                 <h2 className="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-bold mb-6">Booking Summary</h2>
                                 <div className="space-y-6">

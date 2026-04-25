@@ -31,12 +31,12 @@ const UserDetailsPage = () => {
 
     return (
         <div className="bg-background text-on-surface min-h-screen">
-            <header className="w-full px-6 py-8 md:px-12 md:py-12 max-w-7xl mx-auto flex items-center justify-between">
+            <header className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 py-8 md:flex-row md:items-center md:justify-between md:px-12 md:py-12">
                 <div className="flex flex-col gap-1">
                     <span className="text-xs font-bold uppercase tracking-widest text-primary-dim">Step 3 of 4</span>
                     <h1 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-emerald-900">Guest Information</h1>
                 </div>
-                <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+                <button onClick={() => navigate(-1)} className="flex items-center gap-2 self-start text-on-surface-variant transition-colors hover:text-primary md:self-auto">
                     <span className="material-symbols-outlined">close</span>
                     <span className="font-semibold text-sm">Cancel Booking</span>
                 </button>
@@ -111,7 +111,7 @@ const UserDetailsPage = () => {
                     </section>
 
                     {/* Sidebar Summary */}
-                    <aside className="lg:col-span-4 sticky top-12">
+                    <aside className="lg:col-span-4 lg:sticky lg:top-12">
                         <div className="bg-surface-container-lowest border border-outline-variant/10 rounded-xl overflow-hidden shadow-[0px_12px_32px_rgba(44,52,51,0.06)]">
                             <div className="relative h-32 w-full">
                                 <img
@@ -155,7 +155,7 @@ const UserDetailsPage = () => {
                                     <span className="text-sm font-medium text-on-surface-variant">Total Payment</span>
                                     <span className="text-3xl font-extrabold text-emerald-900 tracking-tighter">₹{bookingState.total || 0}.00</span>
                                 </div>
-                                <button type="submit" className="hidden md:block w-full bg-primary text-on-primary py-4 rounded-lg font-bold shadow-[0px_8px_24px_rgba(70,101,83,0.15)] hover:bg-primary-dim transition-colors">
+                                <button type="submit" className="hidden w-full rounded-lg bg-primary py-4 font-bold text-on-primary shadow-[0px_8px_24px_rgba(70,101,83,0.15)] transition-colors hover:bg-primary-dim md:block">
                                     Continue to Payment
                                 </button>
                             </div>
@@ -169,14 +169,14 @@ const UserDetailsPage = () => {
             </main>
 
             <footer className="bg-stone-100 dark:bg-stone-900 border-t border-stone-200/50 dark:border-stone-800/50 mt-auto">
-                <div className="flex flex-col md:flex-row justify-between items-center px-12 py-12 max-w-7xl mx-auto w-full gap-8">
+                <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-8 px-6 py-10 md:flex-row md:px-12 md:py-12">
                     <div className="flex flex-col items-center md:items-start gap-2">
                         <span className="text-lg font-bold text-emerald-900 uppercase tracking-tighter">Civic Naturalist Zoo</span>
                         <p className="font-public-sans text-[10px] uppercase tracking-widest text-stone-500 text-center md:text-left">
                             © 2024 Civic Naturalist Botanical Gardens &amp; Zoo. A Sanctuary for Biodiversity.
                         </p>
                     </div>
-                    <div className="flex gap-8">
+                    <div className="flex flex-wrap justify-center gap-6 md:justify-end md:gap-8">
                         <a className="font-public-sans text-xs uppercase tracking-widest text-stone-500 hover:text-emerald-600 transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
                         <a className="font-public-sans text-xs uppercase tracking-widest text-stone-500 hover:text-emerald-600 transition-all opacity-80 hover:opacity-100" href="#">Accessibility</a>
                         <a className="font-public-sans text-xs uppercase tracking-widest text-stone-500 hover:text-emerald-600 transition-all opacity-80 hover:opacity-100" href="#">Contact Us</a>

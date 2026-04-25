@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './components/AdminLayout';
+import ScrollToTop from './components/ScrollToTop';
 
 // Customer Pages
 import LandingPage from './pages/LandingPage';
@@ -17,12 +18,12 @@ import PaymentPage from './pages/PaymentPage';
 import ConfirmationPage from './pages/ConfirmationPage';
 
 // Admin Pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import SlotManagement from './pages/admin/SlotManagement';
-import BookingManagement from './pages/admin/BookingManagement';
-import RevenueAnalytics from './pages/admin/RevenueAnalytics';
-import PricingManagement from './pages/admin/PricingManagement';
-import UserManagement from './pages/admin/UserManagement';
+import AdminDashboard from './pages/admin/AdminDashboardStitch';
+import SlotManagement from './pages/admin/SlotManagementStitch';
+import BookingManagement from './pages/admin/BookingManagementStitch';
+import RevenueAnalytics from './pages/admin/RevenueAnalyticsStitch';
+import PricingManagement from './pages/admin/PricingManagementStitch';
+import UserManagement from './pages/admin/UserManagementStitch';
 
 // Staff Pages
 import GatekeeperDashboard from './pages/staff/GatekeeperDashboard';
@@ -31,6 +32,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <Navbar />
         <Routes>
           {/* Public Routes */}
@@ -67,6 +69,8 @@ function App() {
               <GatekeeperDashboard />
             </ProtectedRoute>
           } />
+          {/* Catch-all: redirect any unknown route to landing page */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </AuthProvider>

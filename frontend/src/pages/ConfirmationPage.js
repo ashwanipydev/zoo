@@ -36,7 +36,7 @@ const ConfirmationPage = () => {
     return (
         <div className="bg-background text-on-surface min-h-screen pb-24 font-public-sans">
             {/* TopAppBar Component (Transactional/Success Style) */}
-            <header className="docked full-width top-0 flex items-center w-full px-6 py-4 h-16 bg-[#f9f9f8] dark:bg-zinc-950 sticky z-50">
+            <header className="docked full-width top-0 sticky z-50 flex h-auto w-full flex-wrap items-center gap-3 bg-[#f9f9f8] px-4 py-4 sm:h-16 sm:px-6 dark:bg-zinc-950">
                 <div className="flex items-center gap-3">
                     <span className="material-symbols-outlined text-[#466553] dark:text-[#5d856d]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                     <h1 className="font-public-sans tracking-tight font-bold text-on-surface text-lg">Booking Confirmed</h1>
@@ -46,9 +46,9 @@ const ConfirmationPage = () => {
                 </div>
             </header>
 
-            <main className="max-w-4xl mx-auto px-6 pt-8">
+            <main className="mx-auto max-w-4xl px-4 pt-4 pb-12 sm:px-6">
                 {/* Progress Indicator */}
-                <div className="mb-12">
+                <div className="mb-8">
                     <div className="flex justify-between items-center mb-4">
                         <span className="text-[11px] uppercase tracking-wider font-bold text-primary">Confirmation</span>
                         <span className="text-[11px] uppercase tracking-wider font-bold text-primary">100% Complete</span>
@@ -61,7 +61,7 @@ const ConfirmationPage = () => {
                 {/* Success Message Cluster */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mb-16">
                     <div className="md:col-span-7">
-                        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface mb-6">Booking Successful!</h2>
+                        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter text-on-surface mb-4">Booking Successful!</h2>
                         <p className="text-on-surface-variant text-lg leading-relaxed max-w-md">
                             Thank you for supporting our conservation efforts. Your tickets have been issued and a confirmation email has been sent to your registered address.
                         </p>
@@ -92,7 +92,7 @@ const ConfirmationPage = () => {
                                     <span className="material-symbols-outlined text-outline-variant">qr_code_2</span>
                                 </div>
                                 {/* QR Code Area */}
-                                <div className="bg-white p-4 rounded-xl shadow-inner border border-outline-variant/10 mb-8 w-full max-w-[200px] aspect-square flex items-center justify-center">
+                                    <div className="mb-8 flex aspect-square w-full max-w-[200px] items-center justify-center rounded-xl border border-outline-variant/10 bg-white p-4 shadow-inner">
                                     <div className="w-full h-full bg-surface-container-highest flex items-center justify-center relative">
                                         <img alt="Scan-ready QR code for entry" className="w-full h-full mix-blend-multiply opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ6yxk6NJNoVHl4r00Ap0smlaURKSM0W-sW-1343p-oei8siOZYqxD22FgFxNU5VBHvsZyGOWlWp7v8oVR5opxwpEL5tOAURpmiKiY7hSyRqoimdlUOqIZuI25OkKIijHMWlj9Nz6OmCyFnciNlbViciObTDLJ6UOF_9k3t9aYkc-3KgetDi--44auvW0lgRR7ACWK5hfKmaJOrKhw2ptB2Zvkv5eDTywG0RQ-Y0YA6ER0Vo5rbYfyU6smZJbJrYwl-BP9BXReZ3I" />
                                     </div>
@@ -117,7 +117,7 @@ const ConfirmationPage = () => {
                 </div>
 
                 {/* Preparation Tips (Editorial Layout) */}
-                <section className="mt-20 pt-16 border-t border-outline-variant/15">
+                <section className="mt-12 pt-10 border-t border-outline-variant/15">
                     <h3 className="text-2xl font-extrabold tracking-tight mb-8">Preparing for your visit</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="bg-surface-container-low p-6 rounded-xl">
@@ -139,7 +139,7 @@ const ConfirmationPage = () => {
                 </section>
 
                 {/* Banner Image (Asymmetric Bleed Effect) */}
-                <div className="mt-20 h-64 w-full rounded-2xl overflow-hidden relative group">
+                <div className="mt-10 h-44 w-full rounded-2xl overflow-hidden relative group">
                     <img alt="Lion in lush greenery" className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHGex359T7nXeZnZdSDo8pTSLKxF_CBQR609iSXH26TYYQhQwtzqE5sjdATjFJmEIsudloTOh2O1ygr2bu4sBfLcB-J7z1R2lP1ZFXX51FWPlHjg4iFNc4KTiK3LV-FhVaD2UItYlvMM5I6DtXujcdUNdmQqDkreVzCKt-lzo3iyrXzkT4Vx_vi2g-SwqsizD_iDYLCM5FVRjRtxUbSfvD8d_fRbWb5yVn1-LtsjJAI6HuJIWtvI5DlhiW0HgYoySCgHuYigf1Psw" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                         <p className="text-white font-bold text-xl tracking-tight max-w-xs">We can't wait to see you at the Sanctuary.</p>

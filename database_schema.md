@@ -100,6 +100,9 @@ Inventory of available services.
 | `name` | VARCHAR(100) | UNIQUE | |
 | `type` | VARCHAR(20) | PER_BOOKING / PER_PERSON | |
 | `price` | NUMERIC(12,2) | | |
+| `description` | TEXT | | Botanical or service details. |
+| `image_url` | TEXT | | Visual reference link. |
+| `is_active` | BOOLEAN | | |
 
 ---
 

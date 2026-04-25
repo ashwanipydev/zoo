@@ -72,192 +72,299 @@ const SlotManagement = () => {
     const filtered = filter === 'all' ? slots : filter === 'active' ? slots.filter(s => s.isActive) : slots.filter(s => !s.isActive);
 
     return (
-        <div className="font-public-sans w-full animate-in fade-in duration-500">
-            {/* Hero Header Section */}
-            <div className="flex justify-between items-end mb-10">
+        <div className="font-headline w-full animate-in fade-in duration-1000">
+            {/* Header Section */}
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
                 <div>
-                    <h1 className="text-5xl font-extrabold text-primary tracking-tighter">Slot Management</h1>
-                    <p className="text-on-surface-variant mt-2 font-medium">Configure daily operational hours and capacity limits.</p>
+                    <p className="label mb-3">Temporal Distribution</p>
+                    <h2 className="text-5xl font-black text-primary tracking-tighter leading-none">Slot<br/>Orchestration</h2>
                 </div>
                 <button 
                     onClick={() => {
                         setFormData({...formData, slotDate: selectedDate});
                         setShowModal(true);
                     }}
-                    className="bg-primary-container text-on-primary px-8 py-4 rounded-2xl font-black flex items-center gap-3 hover:bg-primary transition-all shadow-xl shadow-primary/20 transform hover:-translate-y-1"
+                    className="btn btn--primary btn--lg shadow-organic-xl flex items-center gap-3"
                 >
-                    <FiPlus size={20} strokeWidth={3} />
-                    Create New Slot
+                    <span className="material-symbols-outlined text-xl">add_circle</span>
+                    Initialize Cycle
                 </button>
-            </div>
+            </header>
 
-            {/* Filter Bar */}
-            <div className="flex flex-col md:flex-row gap-6 mb-10 bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 shadow-sm">
-                <div className="flex gap-2 bg-surface-container-low p-1.5 rounded-xl">
-                    {['all', 'active', 'inactive'].map(f => (
-                        <button 
-                            key={f} 
-                            onClick={() => setFilter(f)}
-                            className={`px-8 py-2.5 rounded-lg font-black text-[10px] uppercase tracking-widest transition-all ${filter === f ? 'bg-primary text-on-primary shadow-lg shadow-primary/20' : 'text-on-surface-variant hover:bg-surface-container-high'}`}
+            {/* Filters Section - Tactile Bento Style */}
+            <section className="flex flex-wrap gap-8 mb-12 items-center bg-surface-container-low p-8 rounded-tactile shadow-organic-sm border-0">
+                <div className="flex flex-col gap-3">
+                    <label className="label text-[9px] ml-1 opacity-40">Observational Date</label>
+                    <div className="flex items-center bg-surface-container-lowest px-6 py-4 rounded-tactile shadow-inner group">
+                        <span className="material-symbols-outlined text-primary/30 mr-3 group-hover:text-primary transition-colors">calendar_clock</span>
+                        <input 
+                            type="date" 
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                            className="bg-transparent border-0 focus:ring-0 text-sm font-black text-primary p-0" 
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <label className="label text-[9px] ml-1 opacity-40">Registry Status</label>
+                    <div className="flex items-center bg-surface-container-lowest px-6 py-4 rounded-tactile shadow-inner group min-w-[200px]">
+                        <span className="material-symbols-outlined text-primary/30 mr-3 group-hover:text-primary transition-colors">tune</span>
+                        <select 
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                            className="bg-transparent border-0 focus:ring-0 text-sm font-black text-primary p-0 w-full appearance-none cursor-pointer"
                         >
-                            {f}
-                        </button>
-                    ))}
+                            <option value="all">All Cycles</option>
+                            <option value="active">Active Only</option>
+                            <option value="inactive">Halted Only</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <div className="md:ml-auto flex items-center gap-4">
-                    <span className="text-xs font-black uppercase tracking-widest text-on-surface-variant">Viewing Date:</span>
-                    <input 
-                        type="date" 
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        className="w-[220px] bg-primary-container/10 border-none rounded-xl py-3 px-6 font-bold focus:ring-2 focus:ring-primary text-primary shadow-inner" 
-                    />
+                <div className="md:ml-auto">
+                    <div className="px-6 py-4 bg-secondary-container/20 rounded-tactile shadow-sm flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-background">
+                            <span className="material-symbols-outlined text-sm">analytics</span>
+                        </div>
+                        <span className="label text-[10px] text-secondary">{filtered.length} Configured Nodes</span>
+                    </div>
                 </div>
-            </div>
+            </section>
 
+            {/* Content Area */}
             {loading ? (
-                <div className="flex items-center justify-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                <div className="flex flex-col items-center justify-center py-32 space-y-6">
+                    <div className="animate-spin text-primary">
+                        <span className="material-symbols-outlined text-5xl">laundry</span>
+                    </div>
+                    <p className="label animate-pulse">Synchronizing Temporal Nodes...</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filtered.length > 0 ? filtered.map(slot => {
-                        const pct = Math.round(((slot.totalCapacity - slot.availableCapacity) / slot.totalCapacity) * 100);
-                        return (
-                            <div key={slot.id} className="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/10 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 border-b-4 border-b-transparent hover:border-b-primary">
-                                <div className="flex justify-between items-start mb-8">
-                                    <div className="space-y-1">
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 block">Daily Slot</span>
-                                        <h3 className="text-2xl font-black text-on-surface tracking-tighter">{slot.startTime.substring(0, 5)} — {slot.endTime.substring(0, 5)}</h3>
+                <>
+                    {/* Visual Node Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+                        {filtered.length > 0 ? filtered.map(slot => {
+                            const pct = Math.round(((slot.totalCapacity - slot.availableCapacity) / slot.totalCapacity) * 100);
+                            return (
+                                <div key={slot.id} className={`bg-surface-container-lowest p-8 rounded-tactile shadow-organic-md hover:shadow-organic-lg transition-all border-0 transform hover:-translate-y-2 group`}>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <div className={`w-12 h-12 rounded-tactile flex items-center justify-center shadow-organic-sm ${slot.isActive ? 'bg-primary/5 text-primary' : 'bg-error-container/10 text-error'}`}>
+                                            <span className="material-symbols-outlined text-xl">
+                                                {slot.isActive ? 'nest_clock_farsight_analog' : 'timer_off'}
+                                            </span>
+                                        </div>
+                                        <div className={`px-4 py-1.5 rounded-full label text-[8px] shadow-sm ${slot.isActive ? 'bg-secondary-container/20 text-secondary' : 'bg-error-container/20 text-error'}`}>
+                                            {slot.isActive ? 'OPERATIONAL' : 'HALTED'}
+                                        </div>
                                     </div>
-                                    <span className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full shadow-sm ${slot.isActive ? 'bg-secondary-container/40 text-on-secondary-container' : 'bg-surface-dim/20 text-on-surface-variant/60'}`}>
-                                        {slot.isActive ? 'Operating' : 'Disabled'}
-                                    </span>
-                                </div>
-                                
-                                <div className="mb-10 bg-surface-container-low/50 p-5 rounded-2xl">
-                                    <div className="flex justify-between items-center mb-3">
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Live Occupancy</span>
-                                        <span className="text-xs font-black text-on-surface">{slot.totalCapacity - slot.availableCapacity} / {slot.totalCapacity}</span>
+                                    
+                                    <div className="space-y-1 mb-8">
+                                        <p className="font-black text-primary text-xl tracking-tighter leading-none">{slot.startTime.substring(0, 5)} — {slot.endTime.substring(0, 5)}</p>
+                                        <p className="label text-[9px] opacity-40 uppercase">Archival Rotation Node</p>
                                     </div>
-                                    <div className="w-full bg-white h-2.5 rounded-full overflow-hidden shadow-inner p-0.5">
-                                        <div 
-                                            className={`h-full rounded-full transition-all duration-1000 ${pct >= 100 ? 'bg-error' : pct > 80 ? 'bg-amber-500' : 'bg-primary'}`} 
-                                            style={{ width: `${pct}%` }} 
-                                        />
-                                    </div>
-                                    <p className="text-[10px] text-on-surface-variant/60 mt-3 font-medium italic">
-                                        {slot.availableCapacity} tickets remaining for this window
-                                    </p>
-                                </div>
 
-<div className="flex gap-3 mt-4">
-    <button className="flex-1 bg-surface-container-high hover:bg-primary hover:text-on-primary py-3 rounded-xl text-xs font-black uppercase tracking-widest text-on-surface transition-all">
-        Edit
-    </button>
-    <button 
-        onClick={() => toggleSlotStatus(slot.id, slot.isActive)}
-        className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
-            slot.isActive 
-                ? 'bg-error-container/20 text-error hover:bg-error hover:text-white' 
-                : 'bg-secondary-container/20 text-secondary hover:bg-secondary hover:text-on-secondary'
-        }`}
-    >
-        {slot.isActive ? 'Disable' : 'Enable'}
-    </button>
-</div>
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-end">
+                                            <div className="space-y-0.5">
+                                                <p className="label text-[8px] opacity-40">Occupancy Density</p>
+                                                <p className="font-black text-primary text-xs">{slot.totalCapacity - slot.availableCapacity} / {slot.totalCapacity}</p>
+                                            </div>
+                                            <span className={`label text-[10px] font-black ${pct > 80 ? 'text-error' : 'text-secondary'}`}>{pct}%</span>
+                                        </div>
+                                        <div className="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden shadow-inner p-0.5">
+                                            <div 
+                                                className={`h-full rounded-full transition-all duration-1000 ${slot.isActive ? (pct > 80 ? 'bg-error' : 'bg-secondary') : 'bg-primary/20'}`} 
+                                                style={{ width: `${pct}%` }} 
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-4 mt-10">
+                                        <button className="flex-1 label text-[9px] py-3 rounded-tactile bg-surface-container-low text-primary/40 hover:text-primary hover:bg-surface-container-high transition-all shadow-organic-sm">
+                                            Edit Node
+                                        </button>
+                                        <button 
+                                            onClick={() => toggleSlotStatus(slot.id, slot.isActive)}
+                                            className={`flex-1 label text-[9px] py-3 rounded-tactile transition-all shadow-organic-sm ${slot.isActive ? 'bg-error-container/10 text-error hover:bg-error-container/20' : 'bg-primary/5 text-primary hover:bg-primary/10'}`}
+                                        >
+                                            {slot.isActive ? 'Deactivate' : 'Restore'}
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        }) : (
+                            <div className="col-span-full py-24 bg-surface-container-low rounded-tactile border-0 flex flex-col items-center justify-center text-center shadow-inner">
+                                <div className="w-20 h-20 rounded-tactile bg-surface-container-lowest flex items-center justify-center text-primary/10 mb-6 shadow-organic-md">
+                                    <span className="material-symbols-outlined text-5xl">event_busy</span>
+                                </div>
+                                <h3 className="text-xl font-black text-primary tracking-tight">No Active Temporal Nodes</h3>
+                                <p className="label text-[10px] mt-2 opacity-40">Initialize the botanical rotation sequence for this date.</p>
                             </div>
-                        );
-                    }) : (
-                        <div className="col-span-full py-20 px-8 bg-surface-container-low/20 rounded-3xl border-2 border-dashed border-outline-variant/20 flex flex-col items-center justify-center text-center">
-                            <div className="w-20 h-20 bg-surface-container rounded-full flex items-center justify-center mb-6">
-                                <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">event_busy</span>
+                        )}
+                    </div>
+
+                    {/* Detailed Registry - Tactical Sheet Style */}
+                    <section className="space-y-8">
+                        <div className="bg-surface-container-lowest rounded-tactile shadow-organic-lg overflow-hidden border-0">
+                            <div className="px-10 py-10 bg-surface-container-low flex justify-between items-center">
+                                <div>
+                                    <p className="label mb-1">Archive Index</p>
+                                    <h3 className="text-3xl font-black text-primary tracking-tighter leading-none">Slot Registry Details</h3>
+                                </div>
+                                <button className="btn bg-surface-container-high text-primary/60 px-6 py-3 rounded-tactile label text-[9px] flex items-center gap-2 hover:text-primary transition-all shadow-organic-sm">
+                                    <span className="material-symbols-outlined text-sm">database_export</span>
+                                    Registry Export
+                                </button>
                             </div>
-                            <h3 className="text-xl font-black text-on-surface tracking-tight">No Slots Configured</h3>
-                            <p className="text-on-surface-variant max-w-xs mt-2 font-medium">There are no time slots defined for {new Date(selectedDate).toLocaleDateString(undefined, { dateStyle: 'long' })}.</p>
-                            <button 
-                                onClick={() => setShowModal(true)}
-                                className="mt-8 text-primary font-black uppercase tracking-widest text-xs hover:underline"
-                            >
-                                + Initialize Day Schedule
-                            </button>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left">
+                                    <thead>
+                                        <tr className="bg-surface-container-low/50 label text-[9px] text-primary/30">
+                                            <th className="px-10 py-6">Temporal Window</th>
+                                            <th className="px-10 py-6">Registry Capacity</th>
+                                            <th className="px-10 py-6">Current Load</th>
+                                            <th className="px-10 py-6">Availability</th>
+                                            <th className="px-10 py-6">Clearance</th>
+                                            <th className="px-10 py-6 text-right">Audit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y-0">
+                                        {filtered.map((slot) => (
+                                            <tr key={slot.id} className="group hover:bg-surface-container-low/50 transition-all">
+                                                <td className="px-10 py-8 font-black text-primary text-base tracking-tighter">{slot.startTime.substring(0, 5)} — {slot.endTime.substring(0, 5)}</td>
+                                                <td className="px-10 py-8 label text-primary/60 font-black">{slot.totalCapacity}</td>
+                                                <td className="px-10 py-8 label text-primary/60 font-black">{slot.totalCapacity - slot.availableCapacity}</td>
+                                                <td className="px-10 py-8">
+                                                    <span className={`label text-sm font-black ${slot.availableCapacity < 10 ? 'text-error' : 'text-secondary'}`}>{slot.availableCapacity}</span>
+                                                </td>
+                                                <td className="px-10 py-8">
+                                                    <div className={`flex items-center gap-3 px-4 py-1.5 rounded-full shadow-sm w-fit ${slot.isActive ? 'bg-secondary-container/20 text-secondary' : 'bg-surface-container-high text-primary/40 opacity-40'}`}>
+                                                        <div className={`w-2 h-2 rounded-full ${slot.isActive ? 'bg-secondary animate-pulse' : 'bg-primary/20'}`}></div>
+                                                        <span className="label text-[8px]">{slot.isActive ? 'ACTIVE' : 'HALTED'}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-10 py-8 text-right">
+                                                    <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
+                                                        <button className="w-10 h-10 rounded-tactile flex items-center justify-center bg-surface-container-low text-primary/40 hover:text-primary transition-all shadow-sm">
+                                                            <span className="material-symbols-outlined text-lg">edit_note</span>
+                                                        </button>
+                                                        <button 
+                                                            onClick={() => toggleSlotStatus(slot.id, slot.isActive)}
+                                                            className={`w-10 h-10 rounded-tactile flex items-center justify-center transition-all shadow-sm ${slot.isActive ? 'bg-error-container/10 text-error' : 'bg-secondary-container/10 text-secondary'}`}
+                                                        >
+                                                            <span className="material-symbols-outlined text-lg">{slot.isActive ? 'pause_circle' : 'play_circle'}</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    )}
-                </div>
+                    </section>
+                </>
             )}
 
-            {/* Create Modal */}
+            {/* Registry Modal - Glassmorphic Style */}
             {showModal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-6 animate-in fade-in duration-300" onClick={() => setShowModal(false)}>
-                    <div className="bg-surface-container-lowest w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden" onClick={e => e.stopPropagation()}>
-                        <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
-                        <button 
-                            onClick={() => setShowModal(false)}
-                            className="absolute top-8 right-8 text-on-surface-variant hover:text-on-surface transition-colors"
-                        >
-                            <FiX size={24} />
-                        </button>
-
-                        <h2 className="text-3xl font-black text-on-surface mb-2 tracking-tighter">New Slot Definition</h2>
-                        <p className="text-on-surface-variant mb-10 font-medium">Set operational parameters for the botanical tour.</p>
-                        
-                        <form onSubmit={handleCreateSlot} className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Observation Date</label>
-                                <input 
-                                    type="date" 
-                                    required
-                                    value={formData.slotDate}
-                                    onChange={e => setFormData({...formData, slotDate: e.target.value})}
-                                    className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 font-bold focus:ring-2 focus:ring-primary text-on-surface shadow-inner" 
-                                />
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-500">
+                    <div className="absolute inset-0 bg-primary/20 backdrop-blur-md" onClick={() => setShowModal(false)}></div>
+                    <div className="relative bg-surface-container-lowest w-full max-w-xl rounded-tactile shadow-organic-xl overflow-hidden border-0 animate-in zoom-in-95 duration-700">
+                        <div className="p-12 bg-surface-container-low flex justify-between items-center">
+                            <div>
+                                <p className="label mb-2">Protocol Draft</p>
+                                <h3 className="text-4xl font-black text-primary tracking-tighter leading-none">Initialize Cycle</h3>
                             </div>
-                            
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="block text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Window Open</label>
+                            <button 
+                                onClick={() => setShowModal(false)}
+                                className="w-14 h-14 rounded-tactile bg-surface-container-high flex items-center justify-center text-primary/40 hover:text-primary transition-all shadow-organic-sm hover:rotate-90"
+                            >
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <form onSubmit={handleCreateSlot} className="p-12 space-y-12">
+                            <div className="space-y-4">
+                                <label className="label text-[9px] ml-1 opacity-40">Scheduled Observation Date</label>
+                                <div className="bg-surface-container-low px-8 py-5 rounded-tactile shadow-inner">
                                     <input 
-                                        type="time" 
+                                        className="w-full bg-transparent border-0 focus:ring-0 text-primary font-black text-lg p-0" 
+                                        type="date"
                                         required
-                                        value={formData.startTime}
-                                        onChange={e => setFormData({...formData, startTime: e.target.value})}
-                                        className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 font-bold focus:ring-2 focus:ring-primary text-on-surface shadow-inner" 
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="block text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Window Close</label>
-                                    <input 
-                                        type="time" 
-                                        required
-                                        value={formData.endTime}
-                                        onChange={e => setFormData({...formData, endTime: e.target.value})}
-                                        className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 font-bold focus:ring-2 focus:ring-primary text-on-surface shadow-inner" 
+                                        value={formData.slotDate}
+                                        onChange={e => setFormData({...formData, slotDate: e.target.value})}
                                     />
                                 </div>
                             </div>
-
-                            <div className="space-y-2">
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Max Visitor Capacity</label>
-                                <input 
-                                    type="number" 
-                                    required
-                                    value={formData.totalCapacity}
-                                    onChange={e => setFormData({...formData, totalCapacity: parseInt(e.target.value)})}
-                                    className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 font-bold focus:ring-2 focus:ring-primary text-on-surface shadow-inner" 
-                                />
+                            <div className="grid grid-cols-2 gap-8">
+                                <div className="space-y-4">
+                                    <label className="label text-[9px] ml-1 opacity-40">Window Ingress</label>
+                                    <div className="bg-surface-container-low px-8 py-5 rounded-tactile shadow-inner">
+                                        <input 
+                                            className="w-full bg-transparent border-0 focus:ring-0 text-primary font-black text-lg p-0" 
+                                            type="time" 
+                                            required
+                                            value={formData.startTime}
+                                            onChange={e => setFormData({...formData, startTime: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <label className="label text-[9px] ml-1 opacity-40">Window Egress</label>
+                                    <div className="bg-surface-container-low px-8 py-5 rounded-tactile shadow-inner">
+                                        <input 
+                                            className="w-full bg-transparent border-0 focus:ring-0 text-primary font-black text-lg p-0" 
+                                            type="time"
+                                            required
+                                            value={formData.endTime}
+                                            onChange={e => setFormData({...formData, endTime: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-
-                            <div className="pt-6 flex gap-4">
-                                <button type="submit" className="flex-[2] bg-primary text-on-primary py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-primary-dim transition-all shadow-xl shadow-primary/30">
-                                    Authorize Slot
+                            <div className="space-y-6">
+                                <div className="flex justify-between items-end px-1">
+                                    <label className="label text-[9px] opacity-40">Stewardship Capacity</label>
+                                    <span className="font-black text-primary text-xl tracking-tighter">{formData.totalCapacity} <span className="text-[10px] text-primary/40 uppercase ml-1">Nodes</span></span>
+                                </div>
+                                <div className="px-2">
+                                    <input 
+                                        className="w-full h-1.5 bg-surface-container-high rounded-full appearance-none cursor-pointer accent-primary" 
+                                        type="range"
+                                        min="10"
+                                        max="500"
+                                        value={formData.totalCapacity}
+                                        onChange={e => setFormData({...formData, totalCapacity: parseInt(e.target.value)})}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between p-8 bg-primary/5 rounded-tactile shadow-sm">
+                                <div className="space-y-1">
+                                    <p className="label text-primary text-[11px]">Immediate Authorization</p>
+                                    <p className="label text-[8px] opacity-40">Publish current node to the live registry.</p>
+                                </div>
+                                <label className="relative inline-flex items-center cursor-pointer group">
+                                    <input 
+                                        type="checkbox" 
+                                        className="sr-only peer" 
+                                        checked={formData.isActive}
+                                        onChange={e => setFormData({...formData, isActive: e.target.checked})}
+                                    />
+                                    <div className="w-14 h-8 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-background after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-primary after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary/20 shadow-inner group-hover:scale-105 transition-transform"></div>
+                                </label>
+                            </div>
+                            <div className="flex gap-6 pt-6">
+                                <button 
+                                    type="submit"
+                                    className="flex-[2] btn btn--primary py-6 shadow-organic-xl"
+                                >
+                                    Authorize Cycle
                                 </button>
                                 <button 
                                     type="button"
                                     onClick={() => setShowModal(false)}
-                                    className="flex-1 bg-surface-container-high py-5 rounded-2xl font-black uppercase tracking-widest text-on-surface-variant hover:bg-surface-container-highest transition-all"
+                                    className="flex-1 btn bg-surface-container-high text-primary/40 py-6 shadow-organic-sm hover:text-primary transition-all"
                                 >
-                                    Abort
+                                    Dismiss
                                 </button>
                             </div>
                         </form>

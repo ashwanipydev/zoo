@@ -48,6 +48,8 @@ CREATE TABLE IF NOT EXISTS add_on_master (
     max_limit_per_booking INTEGER CHECK (max_limit_per_booking >= 0),
     available_capacity INTEGER CHECK (available_capacity >= 0),
     booked_capacity INTEGER NOT NULL DEFAULT 0 CHECK (booked_capacity >= 0),
+    description TEXT,
+    image_url TEXT,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()

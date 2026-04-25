@@ -20,33 +20,32 @@ const Navbar = () => {
 
 
   return (
-    <nav className="navbar" id="main-navbar">
+    <nav className="navbar glass-morphism" id="main-navbar">
       <div className="navbar__inner">
         <Link to="/" className="navbar__brand">
           <span className="navbar__brand-icon">🌿</span>
-          <span className="navbar__brand-text">Civic Naturalist Zoo</span>
+          <span className="navbar__brand-text font-black tracking-tighter text-secondary">Botanical Archive</span>
         </Link>
 
         <div className={`navbar__links ${mobileMenuOpen ? 'navbar__links--open' : ''}`}>
-          <Link to="/" className="navbar__link" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-          <Link to="/book/date" className="navbar__link" onClick={() => setMobileMenuOpen(false)}>Book Tickets</Link>
+          <Link to="/" className="navbar__link font-bold uppercase tracking-widest text-[10px]" onClick={() => setMobileMenuOpen(false)}>Sanctuary</Link>
+          <Link to="/book/date" className="navbar__link font-black uppercase tracking-widest text-[10px]" onClick={() => setMobileMenuOpen(false)}>Book Visit</Link>
           {user ? (
             <>
-              <Link to="/my-bookings" className="navbar__link" onClick={() => setMobileMenuOpen(false)}>My Bookings</Link>
+              <Link to="/my-bookings" className="navbar__link font-bold uppercase tracking-widest text-[10px]" onClick={() => setMobileMenuOpen(false)}>Archive</Link>
               {isAdmin() && (
-                <Link to="/admin" className="navbar__link navbar__link--admin" onClick={() => setMobileMenuOpen(false)}>Admin Panel</Link>
+                <Link to="/admin" className="navbar__link navbar__link--admin font-black uppercase tracking-widest text-[10px]" onClick={() => setMobileMenuOpen(false)}>Curator</Link>
               )}
-              <div className="navbar__user">
-                <FiUser size={16} />
-                <span>{user.email?.split('@')[0]}</span>
-                <button className="btn btn--ghost btn--sm" onClick={handleLogout} id="logout-btn">
-                  <FiLogOut size={14} />
+              <div className="navbar__user flex items-center gap-4">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary/60">{user.email?.split('@')[0]}</span>
+                <button className="btn btn--ghost btn--icon" onClick={handleLogout} id="logout-btn">
+                  <FiLogOut size={16} />
                 </button>
               </div>
             </>
           ) : (
-            <Link to="/login" className="btn btn--primary btn--sm" onClick={() => setMobileMenuOpen(false)}>
-              Sign In
+            <Link to="/login" className="btn btn--primary btn--sm px-6 font-black uppercase tracking-widest text-[10px]" onClick={() => setMobileMenuOpen(false)}>
+              Access
             </Link>
           )}
         </div>

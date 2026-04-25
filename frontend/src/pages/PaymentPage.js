@@ -176,23 +176,23 @@ const PaymentPage = () => {
     return (
         <div className="bg-background text-on-surface min-h-screen font-public-sans">
             {/* TopNavBar */}
-            <header className="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md shadow-[0px_12px_32px_rgba(44,52,51,0.06)]">
-                <div className="flex justify-between items-center px-12 py-4 max-w-full mx-auto">
-                    <Link to="/" className="text-2xl font-bold tracking-tighter text-emerald-900 dark:text-emerald-50">Civic Naturalist Zoo</Link>
+            <header className="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md shadow-[0px_12px_32px_rgba(44,52,51,0.06)] dark:bg-stone-950/80">
+                <div className="mx-auto flex max-w-full items-center justify-between px-4 py-4 sm:px-6 lg:px-12">
+                    <Link to="/" className="text-lg font-bold tracking-tighter text-emerald-900 sm:text-2xl dark:text-emerald-50">Civic Naturalist Zoo</Link>
                     <nav className="hidden md:flex items-center gap-8">
                         <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 tracking-tight transition-colors" href="#">Exhibits</a>
                         <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 tracking-tight transition-colors" href="#">Conservation</a>
                         <a className="text-emerald-800 dark:text-emerald-400 font-semibold border-b-2 border-emerald-800 tracking-tight" href="#">Tickets</a>
                         <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 tracking-tight transition-colors" href="#">Visit</a>
                     </nav>
-                    <div className="flex items-center gap-4">
-                        <Link to="/login" className="px-5 py-2 text-emerald-900 font-medium hover:bg-emerald-50/50 transition-colors">Sign In</Link>
-                        <button className="px-5 py-2 bg-primary text-on-primary rounded-lg font-semibold hover:opacity-90 transition-all">Support Us</button>
+                    <div className="flex items-center gap-3 sm:gap-4">
+                        <Link to="/login" className="px-3 py-2 text-sm font-medium text-emerald-900 transition-colors hover:bg-emerald-50/50 sm:px-5 dark:text-emerald-50">Sign In</Link>
+                        <button className="hidden rounded-lg bg-primary px-5 py-2 font-semibold text-on-primary transition-all hover:opacity-90 sm:block">Support Us</button>
                     </div>
                 </div>
             </header>
 
-            <main className="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
+            <main className="mx-auto max-w-7xl px-4 pb-20 pt-20 sm:px-6 md:px-12">
                 {error && (
                     <div className="mb-8 p-6 bg-error-container/20 border-2 border-error/20 rounded-xl flex items-start gap-4 animate-in slide-in-from-top duration-300">
                         <span className="material-symbols-outlined text-error">warning</span>
@@ -210,7 +210,7 @@ const PaymentPage = () => {
                     {/* Left Column: Checkout Actions */}
                     <div className="lg:col-span-7 space-y-12">
                         <div>
-                            <h1 className="text-4xl font-bold tracking-tight text-on-surface mb-2">Complete Your Booking</h1>
+                            <h1 className="mb-2 text-3xl font-bold tracking-tight text-on-surface md:text-4xl">Complete Your Booking</h1>
                             <p className="text-on-surface-variant max-w-md">Secure your passage to the sanctuary. Your contribution directly supports global biodiversity conservation efforts.</p>
                         </div>
 

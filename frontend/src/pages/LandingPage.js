@@ -14,167 +14,176 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="bg-background text-on-surface">
-      {/* TopNavBar */}
-      <nav className="fixed top-0 w-full z-50 glass-nav shadow-[0px_12px_32px_rgba(44,52,51,0.06)] px-12 py-4 flex justify-between items-center max-w-full mx-auto">
-        <div className="text-2xl font-bold tracking-tighter text-emerald-900 dark:text-emerald-50">Civic Naturalist Zoo</div>
-        <div className="hidden md:flex items-center space-x-8 font-public-sans tracking-tight text-on-surface">
-          <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 hover:bg-emerald-50/50 transition-colors" href="#">Exhibits</a>
-          <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 hover:bg-emerald-50/50 transition-colors" href="#">Conservation</a>
-          <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 hover:bg-emerald-50/50 transition-colors" href="#">Tickets</a>
-          <a className="text-stone-600 dark:text-stone-400 hover:text-emerald-700 hover:bg-emerald-50/50 transition-colors" href="#">Visit</a>
+    <div className="bg-background text-on-surface font-body selection:bg-secondary-container min-h-screen pb-32 md:pb-0">
+      {/* TopAppBar - Responsive */}
+      <header className="fixed top-0 w-full z-50 bg-[#FAFAF5]/80 backdrop-blur-xl border-b border-outline-variant/10 px-6 md:px-12 py-4 flex justify-between items-center transition-all duration-500">
+        <div className="flex items-center gap-3">
+          <span className="material-symbols-outlined md:hidden p-2 rounded-full hover:bg-stone-200/50 transition-colors">menu</span>
+          <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[#173901] dark:text-[#B9F395]">The Habitat Archive</h1>
+        </div>
+        <div className="hidden md:flex items-center space-x-10 font-label text-[11px] uppercase tracking-[0.2em] font-black">
+          <a className="text-[#43493D] hover:text-[#173901] transition-all" href="#">Curated Exhibits</a>
+          <a className="text-[#43493D] hover:text-[#173901] transition-all" href="#">Bio-Conservation</a>
+          <a className="text-[#43493D] hover:text-[#173901] transition-all" href="#">Admission</a>
+          <a className="text-[#43493D] hover:text-[#173901] transition-all" href="#">Field Guides</a>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="px-6 py-2 text-stone-600 dark:text-stone-400 font-medium hover:text-emerald-700 transition-colors">Support Us</button>
-          <Link to="/login" className="px-6 py-2 bg-primary text-on-primary rounded-lg font-semibold scale-95 duration-200 ease-in-out hover:bg-primary-dim inline-block">Sign In</Link>
+          <Link to="/login" className="px-8 py-3 bg-[#173901] text-white rounded-xl font-black text-[11px] uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-primary/20">Access Portal</Link>
         </div>
-      </nav>
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img className="w-full h-full object-cover grayscale-[20%] opacity-90" alt="Cinematic wide shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCAHBPR6rg9ww7zCvQDEbJ-U6i18e3dIxocjsUE-NVkMrakrUYkXTA8goTxwHffkoIQLu5YW5_O6aPsvNt4WtIcDhWti6RMIQGLGJtVIzs0PXj-nfvK1qaZMGO69x6QMA55smXlbdXSez2ZOCPGc3YjgmAsjs9Oz-TNWpJEv8dr1CFtoM5Z1wHdG_lVudbhEHQaAnQBD9Jva0x7SfZFUSc6wEtpNyxS2kEkCDcgIyooo5ItH-LVifRqh1tOmOGm_aYne940qC4PU0"/>
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-transparent"></div>
-        </div>
-        <div className="container mx-auto px-12 relative z-10 grid grid-cols-12 gap-8">
-          <div className="col-span-12 lg:col-span-7">
-            <span className="inline-block px-4 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-sm font-bold tracking-widest uppercase mb-6">Established 1894</span>
-            <h1 className="text-7xl font-extrabold tracking-tighter text-on-primary mb-8 leading-[0.95]">Architecting <br/>the Natural World.</h1>
-            <p className="text-xl text-on-primary/90 max-w-xl mb-12 font-light leading-relaxed">Experience a sanctuary where civic duty meets biological wonder. Our botanical gardens and zoo are curated to foster deep connection with our planet's most vital species.</p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/book/date" className="px-10 py-5 bg-surface-container-lowest text-primary text-lg font-bold rounded-xl shadow-xl hover:bg-primary-container transition-all">Book Tickets</Link>
-              <button className="px-10 py-5 border-2 border-on-primary/30 text-on-primary text-lg font-bold rounded-xl backdrop-blur-md hover:bg-on-primary/10 transition-all">Explore Exhibits</button>
+      </header>
+
+      <main className="pb-32 md:pb-0">
+        {/* Hero Section - Asymmetrical & Responsive */}
+        <section className="relative flex items-center pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden px-6 md:px-12">
+          <div className="absolute -right-20 -top-20 w-[400px] h-[400px] bg-[#B9F395]/10 rounded-full blur-[100px] pointer-events-none"></div>
+          
+          <div className="container mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
+            <div className="md:col-span-7">
+              <span className="font-label text-[10px] uppercase tracking-[0.3em] text-[#43493D] mb-4 block animate-in slide-in-from-bottom duration-500 font-black">Civic Naturalist Zoo • Est. 1894</span>
+              <h2 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-[#173901] tracking-tighter mb-6 leading-[0.9] animate-in slide-in-from-bottom duration-700 delay-100">
+                Reconnect <br/><span className="text-[#396A1E]">with Nature.</span>
+              </h2>
+              <p className="text-base md:text-lg text-[#43493D] max-w-[40ch] mb-8 font-medium leading-[1.6] animate-in slide-in-from-bottom duration-700 delay-200">
+                Experience the wild in its most pristine form through our curated botanical corridors and habitat archives.
+              </p>
+              <div className="flex flex-wrap gap-4 animate-in slide-in-from-bottom duration-700 delay-300">
+                <Link to="/book/date" className="bg-[#173901] text-white px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-3 group">
+                  Book Your Visit
+                  <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </Link>
+                <button className="px-8 py-4 border border-[#C3C9B9] text-[#173901] rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#F4F4EF] transition-all">Explore Habitat</button>
+              </div>
+            </div>
+
+            <div className="md:col-span-5 relative mt-8 md:mt-0 group">
+              <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-surface-container-high shadow-2xl transition-transform duration-700 group-hover:scale-[1.01]">
+                <img className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105" alt="Majestic Lion" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJk6JYdkqIqG7bUWsecSJCEebtop0HGsTfwNLXYiU23nDg-nm8SOmDnpLvOanMfxISDxreovivCcH9F3j2ZYjy5TmFoQht7xW8BpnAEy7Zi27wYggD5UBYGXoiy9MJsF36LjdpxPQyDXbYDkyt73oxk2YAFHseBfc0nmaX8ZD72kv5U8gD6ewaWwfqu_69iqoEheIga5FSdEYFAPXVZ1mjFn1QxQiK3gGyul71iYniZGVdwo5DmMJ4tf8VoR8gp8jo5Zm-caKo52hN" />
+              </div>
+              {/* Status badge - anchored inside the image column, won't overflow into text */}
+              <div className="mt-4 md:absolute md:-bottom-6 md:left-4 bg-white/90 backdrop-blur-xl p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] md:max-w-[220px] border border-white/40">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-[#396A1E] text-base" style={{fontVariationSettings: "'FILL' 1"}}>verified</span>
+                  <span className="font-label text-[9px] uppercase font-black tracking-[0.15em] text-[#43493D]">Archival Status</span>
+                </div>
+                <p className="font-black text-xs text-[#173901] tracking-tight leading-relaxed">All Primary Habitats Currently Active &amp; Healthy</p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      {/* Utility & Info Clusters (Bento) */}
-      <section className="py-24 px-12 bg-surface">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Opening Hours */}
-            <div className="md:col-span-1 bg-surface-container-low p-8 rounded-xl flex flex-col justify-between">
+        </section>
+
+        {/* Category Highlights */}
+        <section className="py-12 md:py-16 px-6 md:px-12 bg-[#F4F4EF]/50">
+          <div className="container mx-auto">
+            <div className="flex justify-between items-end mb-16">
               <div>
-                <span className="material-symbols-outlined text-primary text-4xl mb-4" data-icon="schedule">schedule</span>
-                <h3 className="text-2xl font-bold tracking-tight mb-4">Opening Hours</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-on-surface-variant uppercase tracking-wider">Weekday</span>
-                    <span className="font-bold">09:00 - 18:00</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-on-surface-variant uppercase tracking-wider">Weekend</span>
-                    <span className="font-bold">08:00 - 20:00</span>
-                  </div>
-                  <div className="pt-4 mt-4 border-t border-outline-variant/20">
-                    <p className="text-xs text-on-surface-variant leading-relaxed">Last entry strictly 60 minutes before closing time.</p>
-                  </div>
-                </div>
+                <span className="text-[#43493D] font-label text-[10px] uppercase tracking-[0.3em] font-black mb-3 block">Exploration Paths</span>
+                <h3 className="text-4xl md:text-6xl font-black text-[#173901] tracking-tighter leading-none">Curated Modules</h3>
               </div>
+              <button className="text-[11px] font-black text-[#396A1E] tracking-widest uppercase border-b-2 border-[#396A1E]/20 pb-2 hover:border-[#396A1E] transition-all">View Scientific Index</button>
             </div>
-            {/* Pricing Overview */}
-            <div className="md:col-span-2 bg-surface-container-high p-8 rounded-xl relative overflow-hidden group">
-              <div className="relative z-10 h-full flex flex-col">
-                <h3 className="text-3xl font-extrabold tracking-tighter mb-6">Access &amp; Support</h3>
-                <div className="grid grid-cols-2 gap-8 flex-grow">
-                  <div className="bg-surface-container-lowest p-6 rounded-lg shadow-sm">
-                    <h4 className="font-bold text-lg mb-1">Standard Adult</h4>
-                    <p className="text-primary font-black text-3xl mb-4">₹{adultPrice}.00</p>
-                    <p className="text-xs text-on-surface-variant uppercase tracking-widest font-bold">Includes Conservatories</p>
+
+            <div className="flex overflow-x-auto gap-8 no-scrollbar snap-x pb-8">
+              {[
+                { title: 'Habitat Tours', desc: 'Guided botanical walks through our micro-climate biomes.', icon: 'park', color: 'bg-[#B9F395]/40 text-[#396A1E]' },
+                { title: 'Private Safari', desc: 'Exclusive off-road access to apex predator enclosures.', icon: 'travel_explore', color: 'bg-[#C4EFA3]/40 text-[#173901]' },
+                { title: 'Eco-Education', desc: 'Scientific workshops on biodiversity and preservation.', icon: 'menu_book', color: 'bg-[#FFD8E9]/40 text-[#551B3F]' }
+              ].map((item, idx) => (
+                <div key={idx} className="flex-none w-80 snap-start bg-white p-10 rounded-[3rem] border border-outline-variant/10 shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 group">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-10 transition-transform group-hover:scale-110 duration-500 ${item.color}`}>
+                    <span className="material-symbols-outlined text-3xl">{item.icon}</span>
                   </div>
-                  <div className="bg-primary text-on-primary p-6 rounded-lg shadow-sm">
-                    <h4 className="font-bold text-lg mb-1">Annual Member</h4>
-                    <p className="text-on-primary font-black text-3xl mb-4">₹1800.00</p>
-                    <p className="text-xs text-on-primary/70 uppercase tracking-widest font-bold">Unlimited Access</p>
-                  </div>
+                  <h4 className="text-2xl font-black text-[#173901] tracking-tight mb-4">{item.title}</h4>
+                  <p className="text-sm md:text-base text-[#43493D] leading-[1.6] font-medium opacity-80">{item.desc}</p>
                 </div>
-              </div>
-              <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
-                <span className="material-symbols-outlined text-[12rem]" data-icon="park">park</span>
-              </div>
-            </div>
-            {/* Live Updates */}
-            <div className="md:col-span-1 bg-tertiary-container p-8 rounded-xl flex flex-col justify-center">
-              <span className="material-symbols-outlined text-on-tertiary-container text-4xl mb-4" data-icon="eco">eco</span>
-              <h3 className="text-xl font-bold text-on-tertiary-container mb-2">Botanical Update</h3>
-              <p className="text-on-tertiary-container/80 text-sm italic">"The Titan Arum is currently in early bloom phase. Visit Pavilion 4 for viewing."</p>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
-      {/* Asymmetric Gallery/Exhibit Section */}
-      <section className="py-24 bg-surface-container-low overflow-hidden">
+        </section>
+
+        {/* Featured Conservation Row */}
+        <section className="py-16 md:py-20 px-6 md:px-12 bg-[#173901] text-white relative overflow-hidden">
+          <div className="absolute right-[-10%] top-[-10%] w-[600px] h-[600px] border-[1px] border-white/10 rounded-full"></div>
+          <div className="absolute right-[-20%] top-[-20%] w-[800px] h-[800px] border-[1px] border-white/5 rounded-full"></div>
+          
+          <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+            <div className="order-2 md:order-1">
+              <div className="inline-flex items-center gap-4 bg-white/10 text-[#B9F395] px-5 py-2.5 rounded-full mb-6 border border-white/10 backdrop-blur-md">
+                <span className="material-symbols-outlined text-lg" style={{fontVariationSettings: "'FILL' 1"}}>eco</span>
+                <span className="text-[11px] font-black uppercase tracking-[0.2em]">Conservation First Mandate</span>
+              </div>
+              <h3 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6 leading-[0.95]">Preserving DNA. <br/><span className="text-[#B9F395]">Protecting Life.</span></h3>
+              <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 font-medium">
+                100% of admission cycles fund our global reforestation projects. We are a living seed bank for the planet's collective future.
+              </p>
+              <div className="grid grid-cols-2 gap-8 border-t border-white/15 pt-8">
+                <div>
+                  <div className="text-4xl md:text-5xl font-black mb-2">14k+</div>
+                  <div className="text-[11px] uppercase tracking-[0.3em] font-black opacity-50">Acres Restored</div>
+                </div>
+                <div>
+                  <div className="text-4xl md:text-5xl font-black mb-2">82</div>
+                  <div className="text-[11px] uppercase tracking-[0.3em] font-black opacity-50">Species Saved</div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 md:order-2 bg-white/5 backdrop-blur-2xl p-10 md:p-16 rounded-[4rem] border border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.3)]">
+              <h4 className="text-3xl md:text-4xl font-black mb-6 tracking-tighter">Enter the Archive</h4>
+              <p className="text-white/60 text-base md:text-lg leading-relaxed mb-12 font-medium">Join our ecological collective. Receive seasonal field notes and restoration audit reports directly from our sanctuary stewards.</p>
+              <div className="relative">
+                <input className="w-full bg-white/10 border-none rounded-3xl py-6 px-8 focus:ring-2 focus:ring-[#B9F395] text-white placeholder:text-white/30 font-bold" placeholder="Scientific Contact Address" />
+                <button className="absolute right-3 top-3 bg-[#B9F395] text-[#173901] w-14 h-14 rounded-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl shadow-[#B9F395]/20 group">
+                  <span className="material-symbols-outlined group-hover:rotate-[-20deg] transition-transform">send</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Modern Desktop Footer */}
+      <footer className="hidden md:block w-full bg-[#FAFAF5] border-t border-outline-variant/10 py-32">
         <div className="container mx-auto px-12">
-          <div className="flex flex-col md:flex-row gap-16 items-center">
-            <div className="w-full md:w-5/12">
-              <h2 className="text-5xl font-black tracking-tighter mb-8 leading-none">Curated <br/>Ecosystems.</h2>
-              <p className="text-on-surface-variant text-lg leading-relaxed mb-8">Each exhibit at The Civic Naturalist is a masterclass in architectural ecology. We don't just display nature; we reconstruct the atmospheric and geological conditions required for life to flourish.</p>
-              <ul className="space-y-6">
-                <li className="flex items-start gap-4">
-                  <span className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-                    <span className="material-symbols-outlined text-primary text-sm" data-icon="check">check</span>
-                  </span>
-                  <div>
-                    <h4 className="font-bold text-on-surface uppercase tracking-widest text-xs mb-1">Cloud Forest Pavilion</h4>
-                    <p className="text-sm text-on-surface-variant">Automated misting and temperature control at 1,500m simulation.</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-                    <span className="material-symbols-outlined text-primary text-sm" data-icon="check">check</span>
-                  </span>
-                  <div>
-                    <h4 className="font-bold text-on-surface uppercase tracking-widest text-xs mb-1">Arid Garden Spire</h4>
-                    <p className="text-sm text-on-surface-variant">Housing 400+ rare succulent species in a geodesic structure.</p>
-                  </div>
-                </li>
-              </ul>
+          <div className="flex justify-between items-start mb-24">
+            <div className="max-w-xl">
+              <div className="text-3xl font-black text-[#173901] tracking-tighter mb-8 underline decoration-[#396A1E] decoration-8 underline-offset-[12px]">The Habitat Archive</div>
+              <p className="text-xs text-[#43493D]/60 leading-[2] uppercase tracking-[0.25em] font-black">A high-fidelity ecological repository dedicated to the preservation of rare botanical specimens and the stabilization of primordial biomes since 1894.</p>
             </div>
-            <div className="w-full md:w-7/12 relative">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4 pt-12">
-                  <img className="w-full h-[300px] object-cover rounded-xl shadow-xl" alt="Tropical leaf" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmxWtc8HRbX88K6cAyR9DNIl85XUuh0c8cDJnYemzSe3MYDjDg358g8Pwp-zfaZ-EuVxncKbSz_K4xDjTHHO_GSPLIh0m1WNSbd4dedrXcaocdHWFwfO8JVlgz4YMoZvC9JA0ywLvUqRuSol2_zJBbGMnHizcBTqUpKpzE_pPL_hGyVx5bQsd6gsH7YROmHeVyGaHj8vC6e_uk39A96ydKyQmpE3Lmk3wpkr_QGGfiFeJjs9tPgSt5vvX9x48RuCcDLG0Ac7YaAkk" />
-                  <img className="w-full h-[400px] object-cover rounded-xl shadow-xl" alt="Tiger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjyO-fWW17XnnPCOT5ooNBwDwl0sA9hu_pCaAY9TMkMa70F5NKYujeT7dJ1SOT4BlvYiMDnMyU-PsJGu0Y83aQCvP0GumKO752A3SIeMtzFO-Vq6QfBYV4cB_Mo7xucbVeGCeeZCV5G-Hi0U7xhqgIZXBm_ybdIHMyOgU_7liT-tfKxk9gb9G9aweCUl_jSxO8CxMJgCaAsxXtobRkR2G6az8nh1YOy2L--qI5OyTiXRXuytkVizU0-K0Vu9T7uoKnuWorWNJdRqE" />
-                </div>
-                <div className="space-y-4">
-                  <img className="w-full h-[400px] object-cover rounded-xl shadow-xl" alt="Botanical garden" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX9NwdYHOhPytmo7vNdaFCfOUI2K8PPI_kdT0QL8G0sSIh3aqyKHv-sVF16dqoZ8AmTXbxH6DCDbgfeQ1XVku-foqbb7ugW1_7yD4PmDm5R56wwc3iQUeFtCEWdl1ltBDcDtzl-cClwAOjLcV8LEtGmftYHfFwq8CxON9aLa9R8WoB8UwfmNMQ2PRYrsDlT-PIGcELPsEPgElVepnHhai60ox37Hvj2g5L5iW7DzJxwZdLZYlz6epf03AsEqY3e5kiAl6sR3VKvNQ" />
-                  <img className="w-full h-[300px] object-cover rounded-xl shadow-xl" alt="Elephant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeSzTXImPVlejr5cws04f7qXF71goDSTECQe5jR1LL_x5N5m_UlTDs9TFl78QeysGBgpldCStrQ6I1UrgXoCT-lXJwPRtxIZmGJPZ0RNRkw8JddPNHmj0AsHGrmbFk-jCPUo8T5qOOrmBdXRSgSg68YlzBbXA5sx5Oc9-Zwf5vl6gf5XO1-wx8GpWx7HGr2ovi_GXRtE92615krm4mqVevMe8DUM_9dtxeRK46joNAIKnJPZ9eEJuK0cvtdcPqfDZR84vpKNmY8JE" />
-                </div>
+            <div className="flex gap-20 text-[11px] font-black uppercase tracking-[0.3em]">
+              <div className="flex flex-col gap-6">
+                <a className="text-[#173901] hover:translate-x-2 transition-transform" href="#">Scientific Protocol</a>
+                <a className="text-[#173901] hover:translate-x-2 transition-transform" href="#">Stewardship Index</a>
+              </div>
+              <div className="flex flex-col gap-6">
+                <a className="text-[#173901] hover:translate-x-2 transition-transform" href="#">Habitat Safety</a>
+                <a className="text-[#173901] hover:translate-x-2 transition-transform" href="#">Field Lab</a>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      {/* Conservation CTA (Editorial Style) */}
-      <section className="py-32 bg-background">
-        <div className="container mx-auto px-12 text-center">
-          <div className="max-w-3xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-tertiary mb-6 block">Our Mission</span>
-            <h2 className="text-6xl font-extrabold tracking-tighter mb-10 leading-[1.1]">Preserving Biodiversity <br/>through Civic Engagement.</h2>
-            <p className="text-xl text-on-surface-variant font-light mb-12">We believe that to love nature, one must see it in its most heroic state. Join our conservation efforts today.</p>
-            <div className="flex justify-center gap-6">
-              <button className="px-12 py-6 bg-primary text-on-primary rounded-lg font-bold text-lg hover:bg-primary-dim transition-all shadow-lg">Become a Member</button>
-              <button className="px-12 py-6 border border-outline text-on-surface rounded-lg font-bold text-lg hover:bg-surface-container transition-all">Read Annual Report</button>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Footer */}
-      <footer className="w-full border-t border-stone-200/50 dark:border-stone-800/50 bg-stone-100 dark:bg-stone-900 py-16">
-        <div className="container mx-auto px-12">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
-            <div className="text-lg font-bold text-emerald-900 tracking-tighter">Civic Naturalist Botanical Gardens &amp; Zoo</div>
-            <div className="flex flex-wrap gap-8 font-public-sans text-sm uppercase tracking-widest">
-              <a className="text-stone-500 dark:text-stone-400 hover:text-emerald-600 transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
-              <a className="text-stone-500 dark:text-stone-400 hover:text-emerald-600 transition-all opacity-80 hover:opacity-100" href="#">Accessibility</a>
-              <a className="text-stone-500 dark:text-stone-400 hover:text-emerald-600 transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
-              <a className="text-stone-500 dark:text-stone-400 hover:text-emerald-600 transition-all opacity-80 hover:opacity-100" href="#">Contact Us</a>
-            </div>
-          </div>
-          <div className="text-stone-400 text-xs text-center border-t border-stone-200/20 pt-8 uppercase tracking-widest">
-            © 2024 Civic Naturalist Botanical Gardens &amp; Zoo. A Sanctuary for Biodiversity.
+          <div className="text-[10px] text-[#43493D]/30 text-center border-t border-[#C3C9B9]/20 pt-16 uppercase tracking-[0.5em] font-black">
+            © 2024 Civic Naturalist Botanical Sanctuary • All Scientific Operations Encrypted • Verified Biological Repository
           </div>
         </div>
       </footer>
+
+      {/* Floating Bottom Navigator - Mobile */}
+      <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-10 pt-5 bg-[#FAFAF5]/95 backdrop-blur-3xl border-t border-outline-variant/10 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.05)]">
+        <div className="flex flex-col items-center justify-center bg-[#173901] text-white rounded-full px-8 py-3.5 shadow-2xl shadow-primary/40 active:scale-95 transition-all">
+          <span className="material-symbols-outlined text-xl" style={{fontVariationSettings: "'FILL' 1"}}>explore</span>
+          <span className="font-label font-black text-[10px] uppercase tracking-[0.2em] mt-1.5">Visit</span>
+        </div>
+        <Link to="/book/date" className="flex flex-col items-center justify-center text-[#43493D] opacity-40 hover:opacity-100 transition-opacity">
+          <span className="material-symbols-outlined text-xl">confirmation_number</span>
+          <span className="font-label font-black text-[10px] uppercase tracking-[0.2em] mt-1.5">Book</span>
+        </Link>
+        <div className="flex flex-col items-center justify-center text-[#43493D] opacity-40 hover:opacity-100 transition-opacity">
+          <span className="material-symbols-outlined text-xl">map</span>
+          <span className="font-label font-black text-[10px] uppercase tracking-[0.2em] mt-1.5">Map</span>
+        </div>
+        <Link to="/login" className="flex flex-col items-center justify-center text-[#43493D] opacity-40 hover:opacity-100 transition-opacity">
+          <span className="material-symbols-outlined text-xl">account_circle</span>
+          <span className="font-label font-black text-[10px] uppercase tracking-[0.2em] mt-1.5">Login</span>
+        </Link>
+      </nav>
     </div>
   );
 };
