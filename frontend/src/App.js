@@ -1,32 +1,32 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminLayout from './components/AdminLayout';
-import ScrollToTop from './components/ScrollToTop';
+import { AuthProvider } from './core/context/AuthContext';
+import Navbar from './shared/components/Navbar';
+import ProtectedRoute from './shared/components/ProtectedRoute';
+import AdminLayout from './features/admin/components/AdminLayout';
+import ScrollToTop from './shared/components/ScrollToTop';
 
 // Customer Pages
-import LandingPage from './pages/LandingPage';
-import { LoginPage, SignupPage } from './pages/AuthPages';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
-import DateTimePage from './pages/DateTimePage';
-import TicketSelectionPage from './pages/TicketSelectionPage';
-import UserDetailsPage from './pages/UserDetailsPage';
-import PaymentPage from './pages/PaymentPage';
-import ConfirmationPage from './pages/ConfirmationPage';
+import LandingPage from './features/landing/pages/LandingPage';
+import { LoginPage, SignupPage } from './features/auth/pages/AuthPages';
+import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
+import DateTimePage from './features/booking/pages/DateTimePage';
+import TicketSelectionPage from './features/booking/pages/TicketSelectionPage';
+import UserDetailsPage from './features/booking/pages/UserDetailsPage';
+import PaymentPage from './features/booking/pages/PaymentPage';
+import ConfirmationPage from './features/booking/pages/ConfirmationPage';
 
 // Admin Pages
-import AdminDashboard from './pages/admin/AdminDashboardStitch';
-import SlotManagement from './pages/admin/SlotManagementStitch';
-import BookingManagement from './pages/admin/BookingManagementStitch';
-import RevenueAnalytics from './pages/admin/RevenueAnalyticsStitch';
-import PricingManagement from './pages/admin/PricingManagementStitch';
-import UserManagement from './pages/admin/UserManagementStitch';
+import AdminDashboard from './features/admin/pages/AdminDashboardStitch';
+import SlotManagement from './features/admin/pages/SlotManagementStitch';
+import BookingManagement from './features/admin/pages/BookingManagementStitch';
+import RevenueAnalytics from './features/admin/pages/RevenueAnalyticsStitch';
+import PricingManagement from './features/admin/pages/PricingManagementStitch';
+import UserManagement from './features/admin/pages/UserManagementStitch';
 
 // Staff Pages
-import GatekeeperDashboard from './pages/staff/GatekeeperDashboard';
+import GatekeeperDashboard from './features/staff/pages/GatekeeperDashboard';
 
 function App() {
   return (

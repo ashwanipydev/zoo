@@ -1,8 +1,8 @@
 package com.zoo.booking.scheduler;
 
-import com.zoo.booking.entity.Booking;
-import com.zoo.booking.repository.BookingRepository;
-import com.zoo.booking.service.BookingService;
+import com.zoo.booking.booking.entity.Booking;
+import com.zoo.booking.booking.repository.BookingRepository;
+import com.zoo.booking.booking.service.BookingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
