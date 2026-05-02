@@ -1,66 +1,76 @@
 # Project Context: Zoo Booking System
 
 ## Overview
-This is a full-stack web application for a zoo ticket booking system. It allows customers to book timed entry slots, make payments, and receive digital tickets. Administrators can manage slots, pricing, and users, while staff (gatekeepers) can validate entries using QR codes.
+This is a full-stack zoo ticket booking application. Customers can browse landing content, select timed entry slots, choose ticket quantities, submit contact details, pay, and receive booking confirmations. Admins manage slots, pricing, and users. Staff gatekeepers validate entries using QR check-in.
 
 ## Technology Stack
 - **Backend**: Spring Boot 3.x (Java 17) with Spring Security, JWT, PostgreSQL, Flyway
-- **Frontend**: React 19 with Tailwind CSS, Axios, React Router
+- **Frontend**: Angular 21 standalone components, Angular Router, HttpClient
 - **Database**: PostgreSQL with comprehensive schema for users, bookings, slots, pricing
 - **Payment**: Razorpay integration
-- **Containerization**: Docker Compose for database
-- **Additional**: QR code generation, PDF tickets, email notifications
+- **Containerization**: Docker Compose for PostgreSQL
+- **Additional**: QR code generation, PDF ticket/email notifications
 
 ## Key Components
 
 ### Backend Structure
-- **Controllers**: REST API endpoints for auth, bookings, admin functions
-- **Entities**: JPA entities mapping to database tables
-- **Repositories**: Data access layer with custom queries
-- **Services**: Business logic including pricing engine, booking flow
+- **Controllers**: REST API endpoints for auth, bookings, admin functions, staff check-in
+- **Entities**: JPA entities mapping to booking, slot, user, pricing and payment tables
+- **Repositories**: Spring Data repositories and custom queries
+- **Services**: Business logic for booking lifecycle, pricing, payments, email notifications
 - **Security**: JWT authentication with role-based access (ADMIN, STAFF, USER)
-- **Configuration**: Database, security, email, payment configs
+- **Configuration**: Database, security, email, payment, and migration settings
 
 ### Frontend Structure
-- **Features**: Modular organization by domain (auth, booking, admin, staff)
-- **Core**: Shared utilities, API client, authentication context
-- **Shared**: Reusable components and routing logic
-- **Pages**: Individual page components for each feature
+- **Shell**: Angular app started from `frontend/src/main.ts`
+- **Routing**: `frontend/src/app/app.routes.ts` defines public, booking, auth, and admin routes
+- **Pages**: Standalone Angular pages under `frontend/src/app/pages/`
+- **Features**: Booking flow pages are grouped under `frontend/src/app/pages/book/`
+- **Services**: `frontend/src/app/services/ApiService.ts` and `AuthService.ts`
+- **Styles**: Global styles in `frontend/src/styles.css`
 
-### Database Schema Highlights
-- **Users**: Multi-role system with authentication
-- **Slots**: Time-based booking windows with capacity tracking
-- **Bookings**: Complete booking lifecycle from pending to checked-in
-- **Pricing**: Dynamic pricing with surge system and manual overrides
-- **Add-ons**: Additional services that can be booked
+### Booking Flow Pages
+- `landing-page.ts`: public landing page hero and CTA
+- `date-time-page.ts`: select visit date and time slot
+- `ticket-selection-page.ts`: choose ticket counts and add-ons
+- `user-details-page.ts`: enter customer contact and attendee details
+- `payment-page.ts`: payment summary and confirmation action
+- `confirmation-page.ts`: booking success message
+
+## Database Schema Highlights
+- **Users**: Multi-role system with authentication and role flags
+- **Slots**: Time windows, capacity, availability, and occupancy tracking
+- **Bookings**: Booking lifecycle from pending to confirmed to checked-in
+- **Pricing**: Ticket types, add-ons, and dynamic pricing rules
+- **Add-ons**: Extra services that can be added to a booking
 
 ## Recent Developments
-- Fixed Flyway migration issues and database schema inconsistencies
-- Implemented dynamic pricing with occupancy-based surge (+50% when >80% full)
-- Added QR code scanning for gatekeeper check-in
-- Resolved RBAC issues for staff/admin access
-- Integrated Razorpay payment processing
-- Created comprehensive testing suite and documentation
+- Migrated the frontend from React to Angular with a new standalone component architecture
+- Implemented the public landing page and initial booking flow UI
+- Verified Angular build success for booking pages and landing page
+- Preserved backend API contracts and proxy setup for `/api`
+- Added UI scaffolding for admin, auth, and staff flows in the Angular app
 
 ## Common Issues & Solutions
-- **403 Forbidden**: Check user roles and Spring Security configuration
-- **Booking not finalizing**: Two-step process - initiate then confirm payment
-- **Migration errors**: Ensure Flyway schema history is clean
-- **Payment failures**: Verify Razorpay credentials and webhook setup
+- **Angular build errors**: Check standalone component `imports` arrays and unused imports
+- **Auth proxy issues**: Ensure the frontend dev server proxy forwards `/api` to backend
+- **Booking flow state**: Keep selected slot and ticket data in route state or service
+- **Migration errors**: Use Flyway history and clean schema if schema drift occurs
 
 ## Development Workflow
-1. Database changes: Update Flyway migrations in `backend/src/main/resources/db/migration/`
-2. Backend changes: Modify Java code, run `./mvnw spring-boot:run`
-3. Frontend changes: Modify React code, run `npm start`
-4. Testing: Use provided scripts in root directory
+1. Update backend Java code and run `./mvnw spring-boot:run`
+2. Update frontend Angular code in `frontend/src/` and run `npm run build`
+3. Use `frontend/src/app/services/ApiService.ts` for backend calls through `/api`
+4. Review `stitch_assets/` for UI design guidance
 
 ## Key Files to Understand
-- `database_schema.md`: Complete database documentation
-- `TESTING_DOCUMENTATION_INDEX.md`: Testing guides and API documentation
-- `session_summary.md`: Summary of recent changes and fixes
-- `docker-compose.yml`: Database setup
-- `backend/pom.xml`: Backend dependencies
-- `frontend/package.json`: Frontend dependencies
+- `database_schema.md`: Database design and table relationships
+- `TESTING_DOCUMENTATION_INDEX.md`: Testing and documentation references
+- `session_summary.md`: Recent session notes and fixes
+- `docker-compose.yml`: PostgreSQL service setup
+- `backend/pom.xml`: Backend dependencies and build config
+- `frontend/package.json`: Frontend dependencies and build scripts
+- `stitch_assets/`: UI design assets used for landing and booking pages
 
 ## API Endpoints Overview
 - **Auth**: `/api/auth/login`, `/api/auth/register`, `/api/auth/forgot-password`
@@ -70,10 +80,10 @@ This is a full-stack web application for a zoo ticket booking system. It allows 
 - **Staff**: `/api/staff/checkin`, `/api/staff/occupancy`
 
 ## Environment Setup
-- Backend runs on port 8081
-- Frontend runs on port 3000 (proxies to backend)
-- Database on port 5432
-- Use provided Docker Compose for PostgreSQL
+- Backend typically runs on port `8081`
+- Frontend dev/build runs from `frontend/`; production output is `frontend/dist/zoo-frontend`
+- Database runs on port `5432`
+- Use `docker-compose.yml` for PostgreSQL during development
 
-This context should help developers quickly understand the codebase structure, recent changes, and how to work with the system effectively.</content>
+This context file helps new contributors understand the current Angular migration, booking flow state, and backend integration path.</content>
 <parameter name="filePath">/workspaces/zoo/PROJECT_CONTEXT.md
